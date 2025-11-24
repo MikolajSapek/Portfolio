@@ -1,0 +1,52 @@
+STRUKTURA FOLDERÓW ZE ZDJĘCIAMI
+================================
+
+Umieść swoje foldery ze zdjęciami w głównym katalogu Portfolio:
+
+Portfolio/
+├── random photos/          (zdjęcia na pierwszym ekranie - 18 zdjęć)
+│   ├── photo1.jpg
+│   ├── photo2.jpg
+│   └── ... (do photo18.jpg)
+│
+├── people/                 (People I Met By The Sea - 24 zdjęcia)
+│   ├── photo1.jpg
+│   ├── photo2.jpg
+│   └── ... (do photo24.jpg)
+│
+├── lighthouse/             (The Lighthouse - 9 zdjęć)
+│   ├── photo1.jpg
+│   ├── photo2.jpg
+│   └── ... (do photo9.jpg)
+│
+├── after-sun/              (After The Sun - 18 zdjęć)
+│   ├── photo1.jpg
+│   ├── photo2.jpg
+│   └── ... (do photo18.jpg)
+│
+├── hidden-tides/           (Hidden Tides - 10 zdjęć)
+│   ├── photo1.jpg
+│   ├── photo2.jpg
+│   └── ... (do photo10.jpg)
+│
+├── dead-sea/               (Dead Sea With Michael - 10 zdjęć)
+│   ├── photo1.jpg
+│   ├── photo2.jpg
+│   └── ... (do photo10.jpg)
+│
+├── closing/                (Closing - 9 zdjęć)
+│   ├── photo1.jpg
+│   ├── photo2.jpg
+│   └── ... (do photo9.jpg)
+│
+└── horizon/                 (Horizon - 15 zdjęć)
+    ├── photo1.jpg
+    ├── photo2.jpg
+    └── ... (do photo15.jpg)
+
+WAŻNE:
+- Nazwy folderów muszą być dokładnie takie jak powyżej
+- Zdjęcia w każdym folderze: photo1.jpg, photo2.jpg, itd.
+- Obsługiwane formaty: .jpg, .jpeg, .png, .webp
+- Kod automatycznie wykryje zdjęcia z folderów (jeśli istnieją)
+

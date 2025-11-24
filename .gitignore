@@ -1,0 +1,35 @@
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Optional: Ignore large image folders if you don't want to commit them
+# Uncomment the lines below if you want to exclude images from git
+# asia/
+# balkans/
+# chicago/
+# korea/
+# iceland/
+# korea/
+# maroko/
+# Namibia /
+# paris/
+# philiphines/
+# poststamp/
+# random photos/
+
+# Temporary files
+*.tmp
+*.log
+

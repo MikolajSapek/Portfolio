@@ -1,0 +1,29 @@
+MAPOWANIE FOLDERÓW DO ALBUMÓW
+==============================
+
+Twoje foldery zostały zmapowane do albumów w następujący sposób:
+
+1. "random photos" → People I Met By The Sea (24 zdjęcia)
+2. "Europe" → The Lighthouse (9 zdjęć)
+3. "Iceland" → After The Sun (18 zdjęć)
+4. "Balkans" → Hidden Tides (10 zdjęć)
+5. "Maroko" → Dead Sea With Michael (10 zdjęć)
+6. "Namibia" → Closing (9 zdjęć)
+7. "Asia" → Horizon (15 zdjęć)
+
+NIEUŻYWANE FOLDERY (możesz je użyć później):
+- chicago
+- Korea
+- Paris
+- philippines
+
+JAK TO DZIAŁA:
+- Zdjęcia w każdym folderze powinny być nazwane: photo1.jpg, photo2.jpg, itd.
+- Kod automatycznie załaduje zdjęcia z odpowiednich folderów
+- Jeśli chcesz zmienić mapowanie, edytuj plik script.js
+
+WAŻNE:
+- Umieść wszystkie foldery w głównym katalogu Portfolio
+- Zdjęcia muszą mieć nazwy: photo1.jpg, photo2.jpg, itd.
+- Obsługiwane formaty: .jpg, .jpeg, .png, .webp
+

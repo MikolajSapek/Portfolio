@@ -1,0 +1,15 @@
+{
+  "name": "portfolio-image-compressor",
+  "version": "1.0.0",
+  "description": "Script to compress images for portfolio website",
+  "main": "compress-images.js",
+  "scripts": {
+    "compress": "node compress-images.js"
+  },
+  "dependencies": {
+    "sharp": "^0.33.0",
+    "@vercel/analytics": "^1.3.1",
+    "@vercel/speed-insights": "^1.0.0"
+  }
+}
+

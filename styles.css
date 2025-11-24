@@ -1,0 +1,3230 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #FFFFFF;
+    --bg-color-alt: #FFFFFF;
+    --bg-color-dark: #f0f0f0;
+    --text-dark: #1C1C1C;
+    --text-light: #666666;
+    --accent-primary: #006400;
+    --accent-hover: #55AE3A;
+    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap');
+
+body {
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text-dark);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+    overflow-x: hidden;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+}
+
+/* Navigation */
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: transparent; /* No background */
+    z-index: 100;
+    padding: 1.5rem 0;
+    border-bottom: none;
+    transition: opacity 1s cubic-bezier(0.2, 0, 0.2, 1);
+    opacity: 0; /* Hidden by default */
+    pointer-events: none;
+    visibility: hidden; /* Also hide with visibility to prevent flash */
+}
+
+.navbar:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+}
+
+.navbar.hidden {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.nav-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 4rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    position: relative;
+}
+
+.logo {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--text-dark); /* Black text */
+    text-decoration: none;
+    letter-spacing: 0.2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    grid-column: 2;
+    justify-self: center;
+    margin-top: -0.5rem;
+}
+
+.logo-name {
+    display: block;
+}
+
+.nav-link {
+    color: var(--text-dark); /* Black text */
+    text-decoration: none;
+    font-weight: 300;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    letter-spacing: 0.2px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-link:first-child {
+    grid-column: 1;
+    justify-self: start;
+}
+
+.nav-link:last-child {
+    grid-column: 3;
+    justify-self: end;
+}
+
+.nav-link:hover {
+    color: var(--accent-primary);
+    opacity: 1;
+}
+
+.menu-icon {
+    height: 6rem;
+    width: auto;
+    display: block;
+    margin-left: 4rem;
+    margin-top: -1rem;
+}
+
+/* Main Content */
+.main-content {
+    padding-top: 0;
+    min-height: 100vh;
+    background-color: var(--bg-color-dark);
+}
+
+.photos-grid-container {
+    padding: 0;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    min-height: auto;
+    background-color: var(--bg-color-dark);
+    padding-top: 5rem; /* Miejsce na navbar */
+    padding-bottom: 4rem;
+}
+
+/* Intro text below photos */
+.intro-text-below-photos {
+    position: absolute;
+    width: 100%;
+    max-width: 1400px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 4rem;
+    opacity: 0;
+    transition: opacity 1s cubic-bezier(0.2, 0, 0.2, 1), 
+                transform 1s cubic-bezier(0.2, 0, 0.2, 1);
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 2rem;
+    align-items: baseline;
+}
+
+.intro-text-below-photos:not(.hidden) {
+    opacity: 1;
+    transform: translateX(-50%);
+}
+
+.intro-text-below-photos.hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+}
+
+.intro-label-below {
+    grid-column: 1;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    letter-spacing: 0.3px;
+    margin-bottom: 0.1rem;
+    margin-top: 3rem;
+}
+
+.intro-title-below {
+    grid-column: 1;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.2;
+    margin: 0;
+    margin-top: 1.5rem;
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.intro-name {
+    display: block;
+}
+
+.intro-subtitle {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin-top: 0.5rem;
+}
+
+.intro-text-item {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Split switch gallery */
+.switch-gallery {
+    width: 100%;
+    min-height: 120vh;
+    background-color: var(--bg-color);
+    padding: 0;
+}
+
+.switch-gallery-inner {
+    display: flex;
+    width: 100%;
+    min-height: 120vh;
+}
+
+.switch-half {
+    flex: 1;
+    position: relative;
+    min-height: 120vh;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.switch-half::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    right: 0;
+    width: 1px;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.switch-half:last-child::after {
+    display: none;
+}
+
+.switch-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    z-index: 1;
+}
+
+.switch-frame.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.switch-image-large {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.switch-image-small {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40%;
+    max-width: 480px;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    aspect-ratio: 3 / 4;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.project-entry {
+    max-width: 1400px; /* Increased for better whitespace */
+    margin: 0 auto;
+    padding: 4rem 2rem; /* More padding for whitespace */
+    display: flex;
+    flex-direction: column;
+    gap: 3rem; /* Increased gap */
+}
+
+#iceland .project-entry,
+#dead-sea .project-entry,
+#closing .project-entry {
+    padding: 1rem 2rem 4rem 2rem !important; /* Symetryczne paddingi: góra 1rem, boki 2rem, dół 4rem */
+    padding-left: 2rem !important;
+    padding-right: 0 !important; /* Usuń padding-right aby galeria mogła przewijać się do końca */
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 1400px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    overflow-x: visible !important; /* Pozwól na przewijanie poziome */
+}
+
+
+.project-header {
+    text-align: left;
+    max-width: 780px;
+}
+
+/* Horizon album - center title at top */
+#horizon .project-entry {
+    position: relative;
+    max-width: 100%;
+    padding: 0;
+}
+
+#horizon .project-header {
+    text-align: center;
+    max-width: 100%;
+    width: 100%;
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100; /* Higher z-index to ensure it's above photos */
+    pointer-events: none; /* Don't block clicks on photos */
+}
+
+.project-date {
+    font-size: 0.95rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.4);
+    margin-bottom: 1rem;
+}
+
+.project-title {
+    font-size: 3rem;
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    margin: 0 0 1rem;
+}
+
+.project-count {
+    font-size: 1rem;
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: 300;
+}
+
+.project-description {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: rgba(0, 0, 0, 0.8);
+    margin: 0;
+}
+
+.project-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns base grid */
+    grid-auto-rows: 120px; /* Base row height */
+    gap: 2rem; /* Increased gap for more whitespace - minimalist approach */
+    max-width: 1400px; /* Limit width for better focus */
+    margin: 0 auto; /* Center the gallery */
+    padding: 2rem 0; /* Vertical padding for whitespace */
+}
+
+/* Larger spacing for Balkans gallery */
+#dead-sea .project-gallery {
+    grid-auto-rows: 180px;
+    gap: 4rem;
+}
+
+/* Random grid layout - gallery items */
+.gallery-item {
+    margin: 0;
+    position: relative;
+    overflow: visible; /* Changed to visible so captions can show */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* Remove hover effects on images for Lighthouse section */
+#lighthouse .gallery-item img {
+    transition: none;
+}
+
+#lighthouse .gallery-item img:hover {
+    transform: none;
+    filter: none;
+}
+
+/* Width classes - span columns */
+.gallery-item.w-1 {
+    grid-column: span 1; /* 1 column */
+}
+
+.gallery-item.w-2 {
+    grid-column: span 2; /* 2 columns */
+}
+
+.gallery-item.w-3 {
+    grid-column: span 3; /* 3 columns */
+}
+
+/* Height classes - span rows */
+.gallery-item.h-1 {
+    grid-row: span 2; /* 2 rows (2 * 120px = 240px) */
+}
+
+.gallery-item.h-2 {
+    grid-row: span 3; /* 3 rows (3 * 120px = 360px) */
+}
+
+.project-caption {
+    position: absolute;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    background: #8B6914; /* Default dark golden-brown */
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    padding: 1rem 1.25rem;
+    pointer-events: none;
+    opacity: 0; /* Hidden by default, show on hover */
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    max-width: 280px;
+    line-height: 1.5;
+}
+
+.gallery-item:hover .project-caption {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Different colors for each photo in random grid */
+.project-gallery > .gallery-item:nth-child(1) .project-caption {
+    background: #8B6914; /* Dark golden-brown */
+}
+
+.project-gallery > .gallery-item:nth-child(2) .project-caption {
+    background: #6B4423; /* Dark brown */
+}
+
+.project-gallery > .gallery-item:nth-child(3) .project-caption {
+    background: #A0522D; /* Sienna */
+}
+
+.project-gallery > .gallery-item:nth-child(4) .project-caption {
+    background: #8B4513; /* Saddle brown */
+}
+
+.project-gallery > .gallery-item:nth-child(5) .project-caption {
+    background: #654321; /* Dark brown */
+}
+
+.project-gallery > .gallery-item:nth-child(6) .project-caption {
+    background: #7B3F00; /* Chocolate */
+}
+
+.project-gallery > .gallery-item:nth-child(7) .project-caption {
+    background: #9B6B3D; /* Tan */
+}
+
+.project-gallery > .gallery-item:nth-child(8) .project-caption {
+    background: #5C4033; /* Very dark brown */
+}
+
+/* Cycle through colors for more photos */
+.project-gallery > .gallery-item:nth-child(9) .project-caption {
+    background: #8B6914;
+}
+
+.project-gallery > .gallery-item:nth-child(10) .project-caption {
+    background: #6B4423;
+}
+
+.project-gallery > .gallery-item:nth-child(11) .project-caption {
+    background: #A0522D;
+}
+
+.project-gallery > .gallery-item:nth-child(12) .project-caption {
+    background: #8B4513;
+}
+
+.project-caption-number {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    text-align: center;
+}
+
+.project-caption-text {
+    display: block;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Usunięto odstępy między albumami - wszystkie poza Korea, Namibia i Balkans */
+.chapter-section + .chapter-section {
+    margin-top: 0;
+}
+
+/* Zachowaj odstęp po Korea (hidden-tides) */
+#hidden-tides + .chapter-section {
+    margin-top: 0.5rem;
+}
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(7, 7, 7, 0.92);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 3000;
+}
+
+.lightbox.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+}
+
+.lightbox-body {
+    position: relative;
+    max-width: 85vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 1;
+}
+
+.lightbox-body img {
+    width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+}
+
+.lightbox-caption {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-align: center;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: -2.5rem;
+    right: -0.5rem;
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 2.2rem;
+    cursor: pointer;
+    z-index: 10;
+}
+
+
+/* Duże ekrany (4K i większe) */
+@media (min-width: 1920px) {
+    .nav-container {
+        padding: 0 5rem;
+    }
+    
+    .logo {
+        font-size: 1.2rem;
+    }
+    
+    .nav-link {
+        font-size: 1rem;
+    }
+    
+    .photos-grid-container {
+        padding: 5rem 4rem 4rem;
+        min-height: auto;
+    }
+    
+    .photos-grid {
+        gap: 0.1rem 0.5rem; /* row-gap 0.1rem, column-gap 0.5rem - małe odstępy między kolumnami */
+    }
+    
+    .intro-section {
+        padding: 5rem 5rem 10rem;
+    }
+    
+    .intro-main-title {
+        font-size: 4rem;
+    }
+    
+    .intro-paragraph {
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+    
+    .chapter-section {
+        padding: 10rem 5rem 8rem;
+    }
+    
+    .chapter-header h2 {
+        font-size: 4rem;
+    }
+    
+    .chapter-description {
+        font-size: 1.15rem;
+        line-height: 2;
+    }
+    
+    .chapter-section .photos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+        gap: 3.5rem;
+    }
+    
+    .modal-content {
+        padding: 5rem;
+    }
+    
+    .menu-grid {
+        gap: 5rem 8rem;
+    }
+    
+    .menu-item h2 {
+        font-size: 2.2rem;
+    }
+}
+
+@media (min-width: 2560px) {
+    .nav-container {
+        padding: 0 6rem;
+    }
+    
+    .logo {
+        font-size: 1.3rem;
+    }
+    
+    .nav-link {
+        font-size: 1.05rem;
+    }
+    
+    .photos-grid-container {
+        padding: 5rem 4rem 4rem;
+        min-height: auto;
+    }
+    
+    .photos-grid {
+        gap: 0.1rem 0.5rem; /* row-gap 0.1rem, column-gap 0.5rem - małe odstępy między kolumnami */
+    }
+    
+    .intro-section {
+        padding: 6rem 6rem 12rem;
+    }
+    
+    .intro-main-title {
+        font-size: 4.5rem;
+    }
+    
+    .intro-paragraph {
+        font-size: 1.2rem;
+    }
+    
+    .chapter-section {
+        padding: 12rem 6rem 10rem;
+    }
+    
+    .chapter-header h2 {
+        font-size: 4.5rem;
+    }
+    
+    .chapter-description {
+        font-size: 1.25rem;
+    }
+    
+    .chapter-section .photos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+        gap: 4rem;
+    }
+    
+    .modal-content {
+        padding: 6rem;
+    }
+    
+    .menu-grid {
+        gap: 6rem 10rem;
+    }
+    
+    .menu-item h2 {
+        font-size: 2.5rem;
+    }
+}
+
+.photos-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(3, auto);
+    gap: 0.1rem 0.5rem; /* row-gap 0.1rem (pionowe - zmniejszone), column-gap 0.5rem (poziome) - małe odstępy */
+    width: 100%;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* Początkowy stan - slideshow - wszystkie zdjęcia w centrum */
+.photo-item {
+    position: absolute;
+    aspect-ratio: 1 / 1; /* Stałe proporcje 1:1 */
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0;
+    transform: scale(1);
+    transition: none;
+    z-index: 1000;
+    /* Pozycja i rozmiar będą ustawione przez JavaScript */
+}
+
+/* Aktywne zdjęcie w slideshow - pojawia się na wierzchu */
+.photo-item.slideshow-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: none;
+}
+
+/* Animacja rozchodzenia się */
+.photo-item.animating {
+    transition: left 2500ms cubic-bezier(0.2, 0, 0.2, 1), 
+                top 2500ms cubic-bezier(0.2, 0, 0.2, 1),
+                opacity 2500ms cubic-bezier(0.2, 0, 0.2, 1);
+    /* Bardzo płynna i wolna animacja - tylko pozycja, bez zmiany rozmiaru */
+}
+
+/* Zdjęcia pozostają w pozycji absolute po animacji (bez przejścia do grid) */
+.photo-item:not(.animating):not(.slideshow-active) {
+    position: absolute;
+    opacity: 1;
+    z-index: 1;
+}
+
+/* Stan końcowy - zdjęcia w swoich pozycjach w gridzie */
+.photo-item.in-position {
+    position: relative !important;
+    opacity: 1;
+    transform: scale(1);
+    z-index: 1;
+    /* Rozmiar jest ustawiony przez JavaScript (width/height pozostają jako inline style) */
+    /* NIE nadpisuj width/height - zachowaj rozmiar z slideshow */
+    left: auto !important;
+    top: auto !important;
+    aspect-ratio: 1 / 1; /* Stałe proporcje 1:1 */
+    grid-column: span 2; /* Każde zdjęcie zajmuje 2 kolumny z 12 = efekt 6 kolumn */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Płynne przejście do końcowej pozycji - podobna prędkość jak animacja rozwijania */
+    transition: all 2500ms cubic-bezier(0.2, 0, 0.2, 1);
+    /* Użyj gap z grid, nie margin - odstępy są kontrolowane przez grid gap */
+    /* Gap w gridzie: 0.3rem (row) 0.5rem (column) - identyczne jak w slideshow */
+    /* Odstępy między rzędami: photoSize + rowGapPx (obliczane w JavaScript) */
+}
+
+.photo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    aspect-ratio: 1 / 1; /* Wymuś proporcje 1:1 */
+    transition: var(--transition);
+}
+
+/* Zdjęcia w gridzie (po animacji) - taki sam rozmiar jak w slideshow */
+.photo-item.in-position img {
+    transform: scale(1); /* Pełny rozmiar kontenera - taki sam jak w slideshow */
+}
+
+.photo-item.in-position:hover img {
+    transform: scale(0.85); /* Lekko większe przy hover */
+}
+
+/* Intro Section */
+.intro-section {
+    width: 100%;
+    margin: 0 auto;
+    padding: 4rem 4rem 8rem;
+    background-color: var(--bg-color);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.intro-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.intro-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.intro-label {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.intro-main-title {
+    font-size: 3.5rem;
+    font-weight: 400;
+    color: var(--text-dark);
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.intro-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+}
+
+.intro-paragraph {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-dark);
+    font-weight: 300;
+    max-width: 100%;
+}
+
+/* Albums Preview Section */
+.albums-preview-section {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #ffffff;
+    position: relative;
+    display: flex;
+    padding: 4rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.albums-list {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Bez przestrzeni między nazwami */
+    padding-right: 4rem;
+    z-index: 5;
+}
+
+.album-item {
+    font-size: 2rem;
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Płynniejsza animacja */
+    cursor: pointer;
+    line-height: 1.2; /* Mniejszy line-height - mniej przestrzeni */
+    white-space: nowrap;
+    z-index: 6;
+    display: block;
+    margin: 0;
+    padding: 0.25rem 0; /* Minimalny padding pionowy */
+}
+
+.album-item:hover,
+.album-item.active {
+    color: #2563eb;
+    font-weight: 700;
+    transform: translateY(-2px);
+}
+
+.album-count {
+    color: #60a5fa;
+    font-weight: 500;
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+}
+
+.album-item.active .album-count,
+.album-item:hover .album-count {
+    color: #60a5fa;
+    font-weight: 500;
+}
+
+.album-hover-image {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+    pointer-events: none;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.album-hover-image img {
+    width: 600px;
+    height: 450px;
+    object-fit: cover;
+    border: none;
+    box-shadow: none;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* About Modal */
+.about-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 128, 0.85); /* Strongly transparent #000080 */
+    z-index: 5000;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+}
+
+.about-modal.active {
+    display: flex;
+}
+
+.about-modal-content {
+    max-width: 800px;
+    width: 90%;
+    padding: 4rem;
+    text-align: center;
+    position: relative;
+}
+
+.about-modal-text {
+    font-size: 1.8rem;
+    line-height: 1.9;
+    color: #ffffff;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    margin: 0 0 3rem 0;
+    text-align: left;
+}
+
+.about-back-link {
+    display: inline-block;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 300;
+    padding: 0.5rem 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.about-back-link:hover {
+    background-color: rgba(0, 100, 0, 0.2);
+    border-color: var(--accent-primary);
+    color: var(--accent-hover);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    overflow-y: auto;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    width: 100%;
+    padding: 4rem;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem 6rem;
+}
+
+.menu-item {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+.menu-item:hover {
+    color: var(--accent-primary);
+    opacity: 1;
+}
+
+.menu-item h2 {
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--text-dark);
+    letter-spacing: -0.8px;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.menu-count {
+    font-size: 1rem;
+    color: var(--text-light);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+/* Chapter Sections */
+.chapter-section {
+    padding: 0 0 8rem 0; /* Usunięto padding-top - brak szpar między albumami */
+    width: 100%;
+    margin: 0 auto;
+    background-color: var(--bg-color);
+    border-top: none; /* Usunięto szpry - wszystkie poza Korea, Namibia i Balkans */
+    position: relative;
+    overflow: visible; /* Allow sticky elements to work */
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Pierwsza sekcja - zachowaj górny padding */
+#people.chapter-section {
+    padding-top: 8rem;
+}
+
+/* Zachowaj szpry dla Korea (hidden-tides) */
+#hidden-tides.chapter-section {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Zachowaj szpry dla Namibia (horizontal-gallery-section) */
+.horizontal-gallery-section {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Zachowaj szpry dla Balkans (dead-sea) */
+#dead-sea.chapter-section {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Horizon section - no border, allow overflow for photos */
+#horizon.chapter-section {
+    border-top: none; /* Remove top border line */
+    overflow: visible; /* Allow photos to be visible - no cutting */
+    min-height: 100vh; /* Much larger area - full viewport height */
+    padding: 0; /* No padding - no gap before footer */
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0; /* No margin - no gap before footer */
+}
+
+/* Scroll-based album section */
+.scroll-based-album {
+    padding: 0;
+    min-height: 100vh; /* Just enough height for the pinned section */
+    position: relative;
+    overflow: visible;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #FFFFFF; /* Czysta Biel - eleganckie tło dla Paris */
+    border-top: none; /* Usunięto szpry - wszystkie poza Korea, Namibia i Balkans */
+}
+
+/* Tło dla Europe - Kremowy Beż */
+#europe.scroll-based-album {
+    background-color: #F5F5DC; /* Kremowy Beż (Ecru) */
+}
+
+.scroll-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #FFFFFF; /* Czysta Biel - eleganckie tło dla Paris */
+}
+
+/* Tło dla Europe - Kremowy Beż */
+#europe-scroll-wrapper {
+    background-color: #F5F5DC; /* Kremowy Beż (Ecru) */
+}
+
+.scroll-album-text {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 600px;
+    z-index: 1; /* Lower z-index - photos will cover text during scroll */
+    will-change: transform, opacity;
+    pointer-events: none;
+    opacity: 1;
+    visibility: visible;
+    background-color: #FFFFFF; /* Czysta Biel - eleganckie tło tekstu dla Paris */
+    padding: 2rem;
+}
+
+/* Tło tekstu dla Europe - Kremowy Beż */
+#europe-text {
+    background-color: #F5F5DC; /* Kremowy Beż (Ecru) */
+}
+
+.scroll-album-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.scroll-album-date {
+    font-size: 3rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+    font-family: 'Space Grotesk', serif;
+}
+
+.scroll-album-description {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--text-dark);
+    line-height: 1.8;
+}
+
+.scroll-album-description em {
+    font-style: italic;
+    font-weight: 400;
+}
+
+.horizontal-gallery {
+    position: absolute;
+    left: 0; /* Start from left edge of wrapper */
+    top: 50%;
+    transform: translateY(-50%); /* Center vertically */
+    width: auto; /* Width will be set dynamically based on content */
+    min-width: 100vw; /* At least viewport width */
+    height: auto; /* Height based on photo items */
+    display: flex;
+    flex-direction: row;
+    gap: 0; /* No gap - photos edge to edge */
+    padding: 0;
+    margin: 0; /* Usunięto marginesy */
+    align-items: center;
+    z-index: 5; /* Higher z-index - photos cover text during scroll */
+    will-change: transform;
+    pointer-events: none;
+    opacity: 1;
+    visibility: visible;
+    background-color: transparent; /* Przezroczyste tło - brak białych szpar */
+}
+
+.gallery-photo-item {
+    width: auto;
+    height: 45vh; /* Smaller photos - easier to scroll to end */
+    flex-shrink: 0;
+    min-width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0; /* Usunięto marginesy - brak białych szpar */
+    padding: 0; /* Usunięto padding - brak białych szpar */
+}
+
+.gallery-photo-item img {
+    width: auto;
+    height: 100%;
+    max-width: 100vw;
+    object-fit: contain;
+    display: block;
+    margin: 0; /* Usunięto marginesy - brak białych szpar */
+    padding: 0; /* Usunięto padding - brak białych szpar */
+    vertical-align: top; /* Usunięcie odstępu pod zdjęciem */
+}
+
+/* Album Badge - kolorowe oznaczenie z rokiem i nazwą albumu (stare - do usunięcia) */
+.album-badge {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
+    color: white;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    letter-spacing: 0.5px;
+}
+
+/* Album Badge Stamp - overlay in right corner without shifting content */
+.chapter-section {
+    position: relative;  /* Parent for absolute stamps */
+}
+
+.album-badge-stamp {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    z-index: 200;
+    pointer-events: none;
+    margin: 0;
+    padding: 0;
+}
+
+#europe .album-badge-stamp {
+    position: sticky;
+    top: 2rem;
+    right: 2rem;
+    align-self: flex-end;
+    margin-left: auto;
+    margin-right: 2rem;
+    z-index: 400;
+}
+
+#europe .album-badge-stamp img {
+    animation: none;
+    transition: none;
+    transform: none;
+}
+
+/* Iceland i Philippines - znaczki sticky (zjeżdżają w dół podczas scrollowania) */
+#iceland .album-badge-stamp,
+#closing .album-badge-stamp {
+    position: sticky !important;
+    top: 2rem;
+    right: 2rem;
+    align-self: flex-end;
+    margin-left: auto;
+    margin-bottom: auto;
+}
+
+.album-badge-stamp img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+}
+
+/* Asia - larger stamp, same position */
+#after-sun .album-badge-stamp {
+    width: 120px;
+    height: 120px;
+}
+
+/* Różne kolory dla każdego albumu */
+.album-badge[data-color="1"] {
+    background: #ffffff; /* White background for "People I Met By The Sea" */
+    color: #333333; /* Dark text on white background */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
+}
+
+.album-badge[data-color="2"] {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.album-badge[data-color="3"] {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.album-badge[data-color="4"] {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.album-badge[data-color="5"] {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.album-badge[data-color="6"] {
+    background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+}
+
+.album-badge[data-color="7"] {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    color: #333;
+}
+
+/* Alternujące kolory tła dla sekcji - wyraźne przejścia */
+/* Eleganckie tła dla albumów - luksusowa paleta */
+#people {
+    background-color: #FFFFFF; /* Czysta Biel */
+}
+
+#europe {
+    background-color: #F5F5DC; /* Kremowy Beż (Ecru) */
+}
+
+#iceland {
+    background-color: #E6F2FF; /* Jasny Niebieski - eleganckie tło dla Iceland */
+}
+
+#lighthouse {
+    background-color: #E8E8E8; /* Jasna Szarość */
+}
+
+#after-sun {
+    background-color: #F5F5DC; /* Kremowy Beż (Ecru) */
+    min-height: 150vh;
+    height: 150vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: visible;              /* Pozwól na overflow dla znaczka */
+    width: 100%;
+}
+
+#after-sun .project-entry {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    max-width: 100%;
+    width: 100%;
+}
+
+#after-sun .project-header {
+    padding: 0.5rem 2rem;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+#after-sun .project-title {
+    margin: 0;
+    padding-top: 0.5rem;
+}
+
+#after-sun .project-gallery-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    min-height: 0;
+}
+
+#after-sun .project-gallery {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 columns */
+    grid-template-rows: repeat(3, 1fr); /* 3 rows */
+    gap: 3rem; /* Very large gaps between photos */
+    width: 100%;
+    height: 100%;
+    padding: 3rem 4rem;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#after-sun .after-sun-item {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    opacity: 0; /* Obrazy początkowo ukryte - odkrywane przez mysz/klik */
+    transform: scale(0.8); /* Mniejszy rozmiar początkowo */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Płynne przejście przy odkrywaniu */
+    visibility: visible !important;
+    display: block !important;
+    position: relative;
+}
+
+#after-sun .after-sun-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 0;
+}
+
+/* Revealed photo - bez animacji (obrazy już widoczne) */
+#after-sun .after-sun-item.revealed {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+    visibility: visible !important;
+    display: block !important;
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+/* Reveal overlay for After The Sun */
+.reveal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #F5F5DC; /* Kremowy Beż (Ecru) - eleganckie tło odkrywanego obrazu */
+    pointer-events: none;
+    z-index: 100;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    mask-image: none;
+    -webkit-mask-image: none;
+    mask-size: 100% 100%;
+    -webkit-mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+}
+
+#hidden-tides {
+    background-color: #000080; /* Dark blue background for entire section */
+}
+
+/* Sticky Split Layout for Hidden Tides */
+.album-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: auto; /* Auto height - ends after last photos */
+    position: relative;
+    background-color: #000080; /* Dark blue background */
+    margin-bottom: 0; /* No bottom margin */
+    padding-bottom: 0; /* No bottom padding */
+    overflow: visible; /* Allow sticky to work */
+}
+
+.album-section .album-badge {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.album-content-container {
+    display: flex;
+    width: 100%;
+    min-height: auto; /* Auto height - ends after content */
+    position: relative;
+    overflow: visible; /* Allow sticky to work */
+    align-items: flex-start; /* Ensure left column (content-scroll-wrapper) determines height */
+}
+
+/* Left Column: Scrollable Content */
+.content-scroll-wrapper {
+    width: 75%; /* Even wider to accommodate larger cards */
+    padding: 2rem 2rem 0.5rem 2rem; /* Very minimal bottom padding */
+    background-color: transparent;
+}
+
+.content-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem; /* Reduced gap between pairs */
+    max-width: 1600px; /* Even wider cards */
+    margin: 0 auto;
+    padding: 0;
+    margin-bottom: 0; /* No bottom margin */
+}
+
+/* Pair container for two white cards side by side */
+.grid-item-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    width: 100%;
+}
+
+/* White rectangular card - horizontal layout */
+.white-card {
+    background-color: white;
+    padding: 2rem;
+    position: relative;
+    min-height: 300px; /* More horizontal proportions */
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Number in top left corner */
+.item-number {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000;
+    z-index: 2;
+}
+
+/* Image on the right side - vertical format */
+.item-image-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%; /* Takes up right portion of card */
+    height: 100%;
+    overflow: hidden;
+    background-color: #000;
+    z-index: 1;
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.white-card:hover .item-image-container {
+    width: 100%;
+    height: 100%;
+    z-index: 10; /* Higher z-index to cover text */
+}
+
+/* Disable hover effect for specific photos to prevent numbers from moving */
+.white-card.no-hover:hover .item-image-container {
+    width: 40%;
+    height: 100%;
+    z-index: 1;
+}
+
+.item-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Text content at the bottom left */
+.white-card-content {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 2; /* Lower z-index so image can cover it on hover */
+    max-width: 50%; /* Leave space for image on the right */
+    padding-right: 2rem;
+}
+
+.item-description {
+    font-size: 1.1rem; /* Same as Paris (.scroll-album-description) */
+    font-weight: 300;
+    line-height: 1.8; /* Same as Paris (.scroll-album-description) */
+    color: var(--text-dark); /* Same as Paris (.scroll-album-description) */
+    margin: 0;
+    text-align: left;
+    /* No font-family - uses default body font (Space Grotesk) like Paris */
+}
+
+/* Image expands within white card on hover - no full screen overlay needed */
+
+/* Right Column: Sticky Visual Panel */
+.sticky-visual-panel {
+    width: 40%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    background-color: #000080; /* Dark blue background */
+    color: white;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 4rem;
+    padding-bottom: 6rem;
+    padding-right: 0;              /* Usuń padding po prawej - naprawia białą kreskę */
+    align-self: flex-start; /* Ensure it sticks properly */
+}
+
+.visual-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.visual-date {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    opacity: 0.8;
+    margin: 0 0 1rem 0;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.visual-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    text-transform: uppercase;
+    margin: 0 0 0.5rem 0;
+    color: white;
+    letter-spacing: -0.02em;
+    text-align: center;
+}
+
+/* Korea stamp obok nazwy albumu */
+.visual-title-with-stamp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.korea-stamp {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+}
+
+.korea-stamp img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+}
+
+.visual-count {
+    display: block;
+    font-size: 1rem;
+    font-weight: 300;
+    opacity: 0.8;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Parallax Footer Section */
+.parallax-footer {
+    position: relative;
+    width: 100%;
+    height: 20vh; /* Very small height */
+    overflow: hidden;
+    margin-top: 0;
+    margin-bottom: 0; /* No bottom margin */
+}
+
+/* Horizontal Gallery Section */
+.horizontal-gallery-section {
+    position: relative;
+    width: 100%;
+    background-color: transparent; /* Changed from white to transparent - allows cards to be visible in Safari */
+    margin-bottom: 0; /* No bottom margin - smooth transition to next section */
+    height: auto; /* Will be set dynamically by ScrollTrigger - no fixed height */
+    overflow: visible; /* Changed to visible for Safari - allows horizontal container to be visible */
+    z-index: 1; /* Ensure section is above other elements */
+    pointer-events: none; /* Allow clicks to pass through to elements below when not pinned */
+}
+
+.horizontal-gallery-section .horizontal-gallery-wrapper {
+    pointer-events: auto; /* Re-enable pointer events for wrapper and its children */
+}
+
+
+/* Smooth transition after horizontal gallery */
+.horizontal-gallery-section + .chapter-section {
+    margin-top: 0; /* No margin - spacing is handled by padding-bottom on section */
+}
+
+.horizontal-gallery-wrapper {
+    position: relative;
+    height: auto; /* Will be set dynamically by ScrollTrigger - no fixed height */
+    width: 100%;
+    z-index: 2; /* Ensure wrapper is above section background */
+    background-color: transparent; /* Transparent background */
+}
+
+.horizontal-gallery-sticky {
+    position: relative; /* Changed from sticky to relative - same as Paris/Europa approach */
+    top: 0;
+    height: 100vh;
+    overflow: visible; /* Changed from hidden to visible for Safari - allows container to be visible when transformed */
+    display: flex;
+    align-items: center;
+    z-index: 3; /* Ensure sticky is above wrapper */
+    background-color: transparent; /* Transparent background */
+    /* Safari compatibility */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+}
+
+.horizontal-gallery-container {
+    display: flex;
+    gap: 0; /* No gap between full-screen panels */
+    align-items: center;
+    will-change: transform;
+    /* Safari compatibility */
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    position: relative;
+    left: 0;
+    z-index: 4; /* Ensure container is above everything */
+    background-color: transparent; /* Transparent background */
+}
+
+.horizontal-gallery-intro {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    color: var(--text-dark);
+}
+
+.horizontal-gallery-intro h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.horizontal-gallery-intro span {
+    font-size: 1.5rem;
+    font-weight: 400;
+    opacity: 0.7;
+}
+
+/* Namibia stamp pod napisem - mniejszy rozmiar */
+.namibia-stamp {
+    width: 50px;
+    height: 50px;
+    margin: 1.5rem auto 0;
+    display: block;
+}
+
+.namibia-stamp img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+}
+
+.horizontal-album-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    padding: 0; /* Padding handled by .horizontal-album-images */
+    border-radius: 0;
+    flex-shrink: 0;
+    overflow: hidden; /* No overflow - controlled layout */
+    /* Safari compatibility - ensure visibility */
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Background colors for albums - neutral minimalist palette */
+/* Eleganckie kolory tła dla luksusowego albumu fotograficznego - Namibia */
+.horizontal-album-panel.bg-luxury-white {
+    background-color: #FFFFFF; /* Czysta Biel - główne tło */
+}
+
+.horizontal-album-panel.bg-luxury-ecru {
+    background-color: #F5F5DC; /* Kremowy Beż (Ecru) - elegancka okładka */
+}
+
+.horizontal-album-panel.bg-luxury-light-gray {
+    background-color: #E8E8E8; /* Jasna Szarość - subtelne tło */
+}
+
+.horizontal-album-panel.bg-luxury-deep-black {
+    background-color: #0A0A0A; /* Głęboka Czerń - kontrast i luksus */
+}
+
+/* Kolory tekstu */
+.horizontal-album-panel.text-luxury-dark {
+    color: #1C1C1C; /* Grafitowy/Czarny font */
+}
+
+.horizontal-album-panel.text-luxury-light {
+    color: #FFFFFF; /* Jasny tekst na ciemnym tle */
+}
+
+/* Zachowanie kompatybilności ze starymi klasami */
+.horizontal-album-panel.bg-stone-200,
+.horizontal-album-panel.bg-gray-100,
+.horizontal-album-panel.bg-slate-200,
+.horizontal-album-panel.bg-green-900,
+.horizontal-album-panel.bg-orange-50 {
+    background-color: #FFFFFF; /* Fallback do czystej bieli */
+}
+
+.horizontal-album-panel.text-white {
+    color: #FFFFFF;
+}
+
+.horizontal-album-panel.text-black {
+    color: var(--text-dark);
+}
+
+.horizontal-album-header {
+    display: none !important; /* Hide all text headers - chaotic visual only */
+    margin-bottom: 1.5rem;
+}
+
+.horizontal-album-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+}
+
+.horizontal-album-description {
+    font-size: 1.125rem;
+    opacity: 0.8;
+    max-width: 28rem;
+    line-height: 1.6;
+}
+
+.horizontal-album-images {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 2rem; /* Reduced padding to allow larger images */
+    overflow: hidden; /* No overflow - images stay within bounds */
+    box-sizing: border-box;
+}
+
+/* Controlled asymmetry container - consistent margins */
+.horizontal-album-images.asymmetric-container {
+    max-width: 100%;
+    margin: 0;
+}
+
+.horizontal-album-image-large {
+    width: 66.666%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 0; /* No rounded corners */
+}
+
+.horizontal-album-image-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+}
+
+.horizontal-album-image-large:hover img {
+    transform: scale(1.1);
+}
+
+.horizontal-album-image-small {
+    width: 33.333%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.horizontal-album-image-small > div {
+    height: 66.666%;
+    overflow: hidden;
+    border-radius: 0; /* No rounded corners */
+}
+
+.horizontal-album-image-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+}
+
+.horizontal-album-image-small:hover img {
+    transform: scale(1.1);
+}
+
+/* Controlled asymmetry layout for Namibia album */
+.horizontal-album-image-item {
+    position: absolute;
+    cursor: pointer;
+    overflow: hidden; /* No overflow - images stay within bounds */
+    height: auto;
+    /* NO hover effects - clean, formal layout */
+}
+
+.horizontal-album-image-item.solo-image {
+    /* First panel solo image - large, dominant */
+    box-shadow: none; /* No shadows for clean look */
+}
+
+.horizontal-album-image-item.asymmetric-main {
+    /* Main photo in 3-photo panels - largest */
+    box-shadow: none;
+}
+
+.horizontal-album-image-item.asymmetric-small {
+    /* Smaller photos in 3-photo panels */
+    box-shadow: none;
+}
+
+/* NO hover effects - formal, controlled layout */
+.horizontal-album-image-item:hover {
+    transform: none !important;
+    z-index: 1 !important;
+}
+
+.horizontal-album-image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Preserve original aspect ratio - vertical stays vertical, horizontal stays horizontal */
+    display: block;
+    border: none;
+}
+
+.horizontal-album-number {
+    display: none !important; /* Hide page numbers - no text in chaotic layout */
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    font-size: 3.75rem;
+    font-weight: bold;
+    opacity: 0.1;
+    line-height: 1;
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
+    .horizontal-album-panel {
+        width: 90vw;
+        height: 70vh;
+    }
+    
+    .horizontal-gallery-intro {
+        width: 40vw;
+        font-size: 1.5rem;
+    }
+    
+    .horizontal-gallery-intro h1 {
+        font-size: 1.5rem;
+    }
+    
+    .horizontal-gallery-intro span {
+        font-size: 1rem;
+    }
+    
+    .horizontal-album-title {
+        font-size: 2rem;
+    }
+    
+    .horizontal-album-description {
+        font-size: 1rem;
+    }
+}
+
+.parallax-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%; /* Extra height for parallax effect */
+    background-image: url('https://images.unsplash.com/photo-1551187421-f157b2d83338?q=80&w=2071&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Parallax effect */
+    filter: brightness(0.6);
+    z-index: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .album-content-container {
+        flex-direction: column;
+    }
+    
+    .content-scroll-wrapper,
+    .sticky-visual-panel {
+        width: 100%;
+        position: static;
+        height: auto;
+    }
+    
+    .sticky-visual-panel {
+        min-height: 50vh;
+        padding: 2rem;
+    }
+    
+    .content-grid {
+        gap: 4rem;
+        padding: 2rem 0;
+    }
+    
+    .visual-title {
+        font-size: 3rem;
+    }
+    
+    .visual-title span {
+        font-size: 1.5rem;
+    }
+    
+    .parallax-bg {
+        background-attachment: scroll; /* Disable parallax on mobile */
+    }
+}
+
+#dead-sea {
+    background-color: #E8E8E8; /* Jasna Szarość */
+    position: relative;
+    z-index: 10; /* Ensure Balkans is above Namibia section */
+}
+
+#closing {
+    background-color: #F0E6D2; /* Delikatny Kremowy Beż z ciepłym odcieniem - eleganckie tło dla Philippines */
+}
+
+#horizon {
+    background-color: #0A0A0A; /* Głęboka Czerń - kontrast dla Maroko */
+}
+
+/* Jasny tekst na ciemnym tle dla Horizon */
+#horizon .project-title,
+#horizon .project-header {
+    color: #FFFFFF; /* Biały tekst na ciemnym tle */
+}
+
+.chapter-header {
+    margin-bottom: 5rem;
+    max-width: 900px;
+}
+
+.chapter-header h2 {
+    font-size: 3.5rem;
+    font-weight: 400;
+    margin-bottom: 0.8rem;
+    letter-spacing: -2px;
+    line-height: 1.1;
+    display: inline-block;
+    margin-right: 1rem;
+    color: var(--text-dark);
+}
+
+.chapter-header .chapter-count {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+.chapter-date {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    font-weight: 300;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.chapter-description {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--text-dark);
+    margin-top: 2.5rem;
+    font-weight: 300;
+    max-width: 800px;
+}
+
+.photos-container {
+    width: 100%;
+}
+
+.chapter-section .photos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+    gap: 4rem; /* Increased gap for more whitespace */
+    margin-top: 4rem; /* More top margin */
+    max-width: 1400px; /* Limit width for better focus */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 2rem; /* Horizontal padding */
+}
+
+.chapter-section .photo-item {
+    aspect-ratio: auto;
+    /* Animacja fadeInUp pozostaje dla chapter-section (albumy) */
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.chapter-section .photo-item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: auto;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive - Mobile-First Approach */
+@media (max-width: 768px) {
+    .horizontal-album-panel {
+        padding: 2rem 1rem; /* Reduced padding on mobile */
+    }
+    
+    .horizontal-album-images {
+        max-width: 100%;
+        padding: 1rem 0;
+    }
+    
+    .horizontal-album-image-item {
+        /* Stack images vertically on mobile */
+        position: relative !important;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 300px;
+        margin-bottom: 2rem;
+    }
+    
+    .project-gallery {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
+        gap: 1.5rem;
+        padding: 1rem 0;
+    }
+    
+    .chapter-section .photos-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 2rem;
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .project-gallery {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on tablet */
+    }
+    
+    .chapter-section .photos-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
+    }
+}
+
+/* Responsive */
+
+@media (max-width: 1400px) {
+    .photos-grid {
+        grid-template-columns: repeat(12, 1fr);
+        gap: 0.1rem 0.5rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .nav-container {
+        padding: 0 2rem;
+    }
+
+    .photos-grid-container {
+        padding: 2rem 2rem 3rem;
+    }
+
+    .photos-grid {
+        grid-template-columns: repeat(12, 1fr);
+        gap: 0.75rem 3rem;
+    }
+    
+    .photo-item.in-position {
+        grid-column: span 2;
+    }
+
+    .intro-section {
+        gap: 2.5rem;
+        padding: 3rem 2rem 4rem;
+    }
+
+    .intro-main-title {
+        font-size: 2.8rem;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .chapter-section {
+        padding: 8rem 2rem 4rem;
+    }
+
+    .chapter-section .photos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 0 1.5rem;
+    }
+
+    .photos-grid-container {
+        padding: 2rem 1.5rem 3rem;
+    }
+
+    .photos-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 0.5rem 2rem;
+    }
+    
+    .photo-item.in-position {
+        grid-column: span 2;
+    }
+
+    .intro-section {
+        padding: 2rem 1.5rem 3rem;
+    }
+
+    .intro-main-title {
+        font-size: 2.2rem;
+    }
+
+    .intro-paragraph {
+        font-size: 0.95rem;
+    }
+
+    .chapter-section {
+        padding: 6rem 1.5rem 3rem;
+    }
+
+    .chapter-header h2 {
+        font-size: 2.2rem;
+    }
+
+    .chapter-section .photos-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .nav-link {
+        font-size: 0.9rem;
+    }
+}
+
+/* Exploding Grid for Horizon */
+.exploding-grid-container {
+    position: relative;
+    width: 100%;
+    min-height: 120vh; /* Much larger area for photos */
+    display: flex;
+    align-items: flex-start; /* Align to top */
+    justify-content: center;
+    padding: 2rem 4rem; /* Wider horizontal padding */
+    padding-top: 10rem; /* More top padding to move photos down */
+    overflow: visible; /* Allow photos to be visible - no cutting */
+    max-width: 100%;
+}
+
+.exploding-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 0;
+    position: relative;
+    width: 100%;
+    height: 100%; /* Full height of container */
+    max-width: 100%;
+    overflow: visible; /* Allow photos to be visible - no cutting */
+}
+
+.exploding-grid-collapsed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: visible; /* Allow thumbnails to be visible */
+}
+
+.exploding-grid-collapsed .exploding-thumbnail {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    transform-origin: center center;
+}
+
+/* Removed "Click to expand gallery" button */
+.exploding-grid-collapsed::after {
+    display: none;
+}
+
+@keyframes fadeInHint {
+    to {
+        opacity: 1;
+    }
+}
+
+.exploding-grid-collapsed .exploding-thumbnail {
+    position: absolute;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.exploding-grid-expanded {
+    display: grid;
+}
+
+.exploding-grid-expanded .exploding-thumbnail {
+    position: relative;
+}
+
+.exploding-thumbnail {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 0; /* Sharp edges - no rounding */
+    background-color: #f0f0f0;
+    transition: transform 0.3s ease;
+}
+
+.exploding-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Hover effect is handled by JavaScript, no CSS hover needed */
+.exploding-thumbnail {
+    transition: none; /* Disable CSS transitions, use GSAP instead */
+}
+
+/* Fullscreen view */
+.exploding-fullscreen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent; /* No darkening */
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.exploding-fullscreen-image {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 0; /* Sharp edges - no rounding */
+    margin: auto; /* Center the image */
+    display: block;
+}
+
+.exploding-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10000;
+}
+
+.exploding-close:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+}
+
+.exploding-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: white;
+    font-size: 2.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10000;
+}
+
+.exploding-nav-prev {
+    left: 2rem;
+}
+
+.exploding-nav-next {
+    right: 2rem;
+}
+
+.exploding-nav:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.exploding-counter {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 1rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    z-index: 10000;
+}
+
+/* Responsive for Exploding Grid */
+@media (max-width: 768px) {
+    .exploding-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.75rem;
+        padding: 1rem 0;
+    }
+    
+    .exploding-nav {
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+    }
+    
+    .exploding-nav-prev {
+        left: 1rem;
+    }
+    
+    .exploding-nav-next {
+        right: 1rem;
+    }
+    
+    .exploding-close {
+        top: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+}
+
+/* Footer Section - Last element on page */
+.site-footer {
+    width: 100%;
+    min-height: 25vh; /* 1/4 of screen height */
+    background-color: var(--bg-color);
+    margin-top: 0;
+    padding: 0;
+    position: relative;
+    z-index: 1000; /* Very high z-index to ensure it's above everything */
+    clear: both; /* Clear any floats */
+    overflow: hidden; /* Prevent any content from escaping */
+}
+
+/* Ensure nothing appears after footer */
+.site-footer ~ * {
+    display: none !important;
+}
+
+.footer-container {
+    display: flex;
+    width: 100%;
+    min-height: 60vh; /* Increased to 60vh - much larger footer */
+}
+
+.footer-left {
+    width: 60%;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 60vh; /* Increased to 60vh - much larger footer */
+    overflow: hidden;
+}
+
+.footer-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.footer-overlay-box {
+    position: absolute;
+    top: 0;
+    right: 10%;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    background-color: #87CEEB;
+    padding: 3rem 4rem;
+    max-width: 500px;
+    z-index: 2;
+}
+
+.footer-overlay-text {
+    color: var(--text-dark);
+}
+
+.footer-meta {
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.footer-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.footer-subtitle {
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin: 0.5rem 0 0 0;
+    color: var(--text-dark);
+}
+
+.footer-right {
+    width: 40%;
+    background-color: #D4AF37;
+    padding: 3rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-content {
+    max-width: 500px;
+}
+
+.footer-paragraph {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+}
+
+.footer-paragraph:last-child {
+    margin-bottom: 0;
+}
+
+.footer-link {
+    color: var(--accent-primary);
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: var(--accent-hover);
+}
+
+/* Responsive Footer */
+@media (max-width: 900px) {
+    .footer-container {
+        flex-direction: column;
+    }
+    
+    .footer-left,
+    .footer-right {
+        width: 100%;
+    }
+    
+    .footer-left {
+        height: 60vh;
+    }
+    
+    .footer-image-wrapper {
+        height: 60vh;
+    }
+    
+    .footer-overlay-box {
+        right: 5%;
+        padding: 2rem 2.5rem;
+        max-width: 90%;
+    }
+    
+    .footer-title {
+        font-size: 2rem;
+    }
+    
+    .footer-right {
+        padding: 3rem 2rem;
+        min-height: 40vh;
+    }
+}
+
+/* Poziomy układ zdjęć – Balkans: przewijanie w bok, Philippines: przewijanie w dół */
+#dead-sea .project-gallery {
+    display: flex !important;         /* Flex row – poziomo */
+    flex-direction: row;              /* Wszystkie zdjęcia w linii poziomej */
+    flex-wrap: nowrap;                /* Bez zawijania do nowej linii */
+    gap: 4rem;                        /* Duże odstępy między zdjęciami */
+    overflow-x: auto;                 /* Przewijanie poziome jeśli za dużo */
+    padding: 2rem 0 !important;
+    padding-left: 0 !important;
+    padding-right: 8rem !important;   /* Duży padding na końcu aby ostatnie zdjęcie było w pełni widoczne i tło było widoczne jak w albumie Europa */
+    scrollbar-width: thin;            /* Cienki scrollbar */
+    scrollbar-color: rgba(0,0,0,0.2) transparent;
+}
+
+#closing .project-gallery {
+    display: flex !important;         /* Flex row – poziomo */
+    flex-direction: row;              /* Zdjęcia w rzędach poziomych */
+    flex-wrap: wrap;                  /* Zawijanie do nowych rzędów */
+    gap: 4rem;                        /* Duże odstępy między zdjęciami */
+    overflow-x: visible;              /* Normalne przewijanie pionowe strony */
+    padding: 2rem 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 !important;
+    justify-content: center;           /* Wyśrodkuj zdjęcia w rzędach */
+    box-sizing: border-box;
+}
+
+/* Iceland - taki sam układ jak Philippines, wyśrodkowany symetrycznie */
+#iceland .project-gallery {
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4rem;
+    overflow-x: visible;
+    padding: 2rem 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 !important;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+#dead-sea .gallery-item {
+    flex-shrink: 0;                   /* Nie zmniejszaj zdjęć */
+    width: auto;                      /* Szerokość wg zdjęcia */
+    height: 350px;                    /* Mniejsza wysokość ramki - zdjęcia się mieszczą */
+    margin: 0 !important;             /* Reset marginesów */
+    grid-column: span 1 !important;   /* Ignoruj grid klasy JS */
+    grid-row: span 1 !important;
+    overflow: hidden;
+}
+
+#closing .gallery-item,
+#iceland .gallery-item {
+    flex-shrink: 0;                   /* Nie zmniejszaj zdjęć */
+    width: calc(50% - 2rem);          /* Dwa zdjęcia obok siebie (50% minus gap) */
+    height: 350px;                    /* Mniejsza wysokość ramki - zdjęcia się mieszczą */
+    margin: 0 !important;             /* Reset marginesów */
+    grid-column: span 1 !important;   /* Ignoruj grid klasy JS */
+    grid-row: span 1 !important;
+    overflow: hidden;
+}
+
+/* Zdjęcia – pełne w poziomie, bez cropu */
+#dead-sea .project-gallery .gallery-item img,
+#closing .project-gallery .gallery-item img,
+#iceland .project-gallery .gallery-item img {
+    width: auto;                      /* Szerokość naturalna */
+    height: 100%;                     /* Pełna wysokość ramki */
+    max-height: 100%;
+    object-fit: contain;              /* Całe zdjęcie widoczne poziomo */
+    object-position: center;
+    display: block;
+    cursor: pointer;
+}
+
+/* Ukryj napisy */
+#dead-sea .project-caption,
+#closing .project-caption,
+#iceland .project-caption {
+    display: none !important;
+}
+
+/* Responsywność pozioma */
+@media (max-width: 1024px) {
+    #dead-sea .gallery-item,
+    #closing .gallery-item,
+    #iceland .gallery-item {
+        height: 300px;                /* Mniejsza wysokość na tablet */
+    }
+}
+@media (max-width: 768px) {
+    #dead-sea .gallery-item,
+    #closing .gallery-item,
+    #iceland .gallery-item {
+        height: 250px;                /* Jeszcze mniejsza na mobile */
+    }
+    #dead-sea .project-gallery,
+    #closing .project-gallery,
+    #iceland .project-gallery {
+        gap: 2rem;
+    }
+}
+
+/* Optymalizacja obrazów - lazy loading z kompresją */
+/* Uwaga: Dla głównej strony (.photo-item) animacje pozostają bez zmian */
+.lazy-optimized-image {
+    /* Dla albumów - obrazy od razu widoczne (bez blur/fade) */
+    transition: none;
+    opacity: 1;
+}
+
+.lazy-optimized-image.loaded {
+    opacity: 1;
+}
+
+/* Główna strona - zachowaj oryginalne animacje slideshow */
+/* Animacje są kontrolowane przez .photo-item (opacity, position), nie przez obraz */
+.main-content .photo-item {
+    /* Animacje slideshow pozostają bez zmian */
+}
+.main-content .photo-item img.lazy-optimized-image {
+    /* Obrazy na głównej stronie nie mają blur/fade - animacje są w kontenerze */
+    opacity: 1;
+    filter: none;
+}
+
+/* Usunięto ograniczenia rozmiaru - obrazy wyświetlają się w oryginalnych rozmiarach */
+/* Kompresja działa tylko w JavaScript (zmniejsza rozmiar pliku, nie wyświetlanie) */
+
+/* ============================================
+   COMPREHENSIVE RESPONSIVE DESIGN
+   ============================================ */
+
+/* Mobile First - iPhone (320px - 480px) */
+@media (max-width: 480px) {
+    /* Navigation */
+    .nav-container {
+        padding: 0 1rem;
+    }
+    
+    .menu-icon {
+        height: 4rem;
+        margin-left: 1rem;
+    }
+    
+    .logo {
+        font-size: 0.9rem;
+    }
+    
+    /* Main Content */
+    .photos-grid-container {
+        padding: 1rem 0.5rem 2rem;
+    }
+    
+    .photos-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .photo-item.in-position {
+        grid-column: span 2;
+    }
+    
+    /* Intro Text */
+    .intro-text-below-photos {
+        padding: 0 1rem;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .intro-title-below {
+        font-size: 1.5rem;
+    }
+    
+    .intro-subtitle {
+        font-size: 1rem;
+    }
+    
+    /* Chapter Sections */
+    .chapter-section {
+        padding: 4rem 1rem 2rem;
+    }
+    
+    .project-entry {
+        padding: 2rem 1rem;
+        gap: 2rem;
+    }
+    
+    .project-title {
+        font-size: 2rem;
+    }
+    
+    .project-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        padding: 1rem 0;
+    }
+    
+    /* Scroll-based albums (Paris, Europe) */
+    .scroll-wrapper {
+        padding: 2rem 1rem;
+    }
+    
+    .scroll-album-title {
+        font-size: 2rem;
+    }
+    
+    .scroll-album-date {
+        font-size: 0.9rem;
+    }
+    
+    .scroll-album-description {
+        font-size: 0.9rem;
+    }
+    
+    /* Horizontal Gallery (Namibia) */
+    .horizontal-gallery-section {
+        height: auto;
+    }
+    
+    .horizontal-gallery-wrapper {
+        height: auto;
+    }
+    
+    .horizontal-album-panel {
+        width: 100vw;
+        height: 100vh;
+        padding: 1rem;
+    }
+    
+    .horizontal-gallery-intro {
+        width: 90vw;
+        font-size: 1.2rem;
+        padding: 2rem 1rem;
+    }
+    
+    .horizontal-gallery-intro h1 {
+        font-size: 1.5rem;
+    }
+    
+    /* Switch Gallery (Chicago) */
+    .switch-gallery {
+        min-height: 100vh;
+    }
+    
+    .switch-gallery-inner {
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    
+    .switch-half {
+        min-height: 50vh;
+    }
+    
+    /* Menu Modal */
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem 1rem;
+    }
+    
+    .menu-item h2 {
+        font-size: 1.5rem;
+    }
+    
+    /* Albums Preview */
+    .albums-list {
+        padding: 2rem 1rem;
+    }
+    
+    .album-item {
+        font-size: 1rem;
+        padding: 1rem;
+    }
+    
+    /* Footer */
+    .footer-container {
+        flex-direction: column;
+    }
+    
+    .footer-left {
+        height: 40vh;
+    }
+    
+    .footer-image-wrapper {
+        height: 40vh;
+    }
+    
+    .footer-overlay-box {
+        padding: 1.5rem;
+        max-width: 95%;
+    }
+    
+    .footer-title {
+        font-size: 1.5rem;
+    }
+    
+    /* Exploding Grid (Maroko) */
+    .exploding-grid-container {
+        padding: 4rem 1rem 2rem;
+    }
+    
+    .exploding-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    /* After Sun (Asia) */
+    #after-sun .project-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    /* Korea Album */
+    .album-content-container {
+        flex-direction: column;
+    }
+    
+    .content-scroll-wrapper,
+    .sticky-visual-panel {
+        width: 100%;
+        position: static;
+    }
+    
+    .sticky-visual-panel {
+        min-height: 40vh;
+        padding: 2rem 1rem;
+    }
+    
+    .visual-title {
+        font-size: 2rem;
+    }
+}
+
+/* Tablet - iPad (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    /* Navigation */
+    .nav-container {
+        padding: 0 2rem;
+    }
+    
+    .menu-icon {
+        height: 5rem;
+        margin-left: 2rem;
+    }
+    
+    /* Main Content */
+    .photos-grid-container {
+        padding: 2rem 1.5rem 3rem;
+    }
+    
+    .photos-grid {
+        grid-template-columns: repeat(8, 1fr);
+        gap: 0.75rem;
+    }
+    
+    /* Intro Text */
+    .intro-text-below-photos {
+        padding: 0 2rem;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+    
+    .intro-title-below {
+        font-size: 1.8rem;
+    }
+    
+    /* Chapter Sections */
+    .chapter-section {
+        padding: 6rem 2rem 3rem;
+    }
+    
+    .project-entry {
+        padding: 3rem 2rem;
+        gap: 2.5rem;
+    }
+    
+    .project-title {
+        font-size: 2.5rem;
+    }
+    
+    .project-gallery {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+    
+    /* Horizontal Gallery (Namibia) */
+    .horizontal-album-panel {
+        width: 100vw;
+        height: 100vh;
+        padding: 2rem;
+    }
+    
+    .horizontal-gallery-intro {
+        width: 80vw;
+        font-size: 1.5rem;
+    }
+    
+    /* Switch Gallery (Chicago) */
+    .switch-gallery-inner {
+        flex-direction: row;
+    }
+    
+    /* Menu Modal */
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem;
+    }
+    
+    /* Exploding Grid (Maroko) */
+    .exploding-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+    
+    /* After Sun (Asia) */
+    #after-sun .project-gallery {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+/* Tablet Landscape - iPad Pro (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Navigation */
+    .nav-container {
+        padding: 0 3rem;
+    }
+    
+    /* Main Content */
+    .photos-grid-container {
+        padding: 3rem 2rem 4rem;
+    }
+    
+    .photos-grid {
+        grid-template-columns: repeat(10, 1fr);
+        gap: 1rem;
+    }
+    
+    /* Intro Text */
+    .intro-text-below-photos {
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 2rem;
+    }
+    
+    /* Chapter Sections */
+    .chapter-section {
+        padding: 6rem 3rem 4rem;
+    }
+    
+    .project-entry {
+        padding: 3rem 2.5rem;
+    }
+    
+    .project-gallery {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+    
+    /* Menu Modal */
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem;
+    }
+    
+    /* Exploding Grid (Maroko) */
+    .exploding-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+    
+    /* After Sun (Asia) */
+    #after-sun .project-gallery {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+}
+
+/* Desktop - Standard (1025px - 1919px) */
+@media (min-width: 1025px) and (max-width: 1919px) {
+    /* Standard desktop styles - most styles already defined */
+    .photos-grid {
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1rem 2rem;
+    }
+    
+    .project-gallery {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+}
+
+/* Large Desktop - 4K and above (1920px+) */
+@media (min-width: 1920px) {
+    .photos-grid-container {
+        max-width: 1920px;
+        margin: 0 auto;
+    }
+    
+    .project-entry {
+        max-width: 1600px;
+    }
+    
+    .chapter-section {
+        padding: 8rem 4rem 6rem;
+    }
+    
+    .intro-text-below-photos {
+        max-width: 1600px;
+    }
+}
+
+/* Landscape Orientation - Mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .horizontal-album-panel {
+        height: 100vh;
+    }
+    
+    .switch-gallery {
+        min-height: 100vh;
+    }
+    
+    .switch-half {
+        min-height: 100vh;
+    }
+    
+    .footer-left {
+        height: 60vh;
+    }
+    
+    .footer-image-wrapper {
+        height: 60vh;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    .menu-item,
+    .album-item,
+    .nav-link {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Disable hover effects on touch devices */
+    .gallery-item:hover img {
+        transform: none;
+    }
+    
+    /* Better scrolling on touch */
+    .horizontal-gallery-section,
+    .scroll-wrapper {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
