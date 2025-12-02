@@ -8,12 +8,21 @@ import os
 from PIL import Image
 import sys
 
-# Ustawienia kompresji - wysoka jakość (80%)
-MAX_WIDTH = 1000
-MAX_HEIGHT = 700
-QUALITY = 80  # 80% jakość JPEG - wysoka jakość przy zachowaniu małych plików
+# Ustawienia kompresji - różne dla różnych folderów
+# Dla eager loading (Namibia, Balkans): wyższa rozdzielczość dla lepszej jakości
+# Dla lazy loading: mniejsza rozdzielczość dla szybszego ładowania
+DEFAULT_MAX_WIDTH = 1000
+DEFAULT_MAX_HEIGHT = 700
+DEFAULT_QUALITY = 80  # 80% jakość JPEG
 
-# Foldery do kompresji
+# Specjalne ustawienia dla folderów z eager loading (jak Namibia)
+EAGER_LOADING_FOLDERS = {
+    'namibia': {'max_width': 1400, 'max_height': 1920, 'quality': 85},
+    'balkans': {'max_width': 1400, 'max_height': 1920, 'quality': 85},
+    'random photos': {'max_width': 1200, 'max_height': 1200, 'quality': 85}  # Główna strona
+}
+
+# Foldery do kompresji (bez random photos - użytkownik nie chce kompresować)
 FOLDERS_TO_COMPRESS = [
     'paris',
     'europe',
@@ -24,13 +33,17 @@ FOLDERS_TO_COMPRESS = [
     'namibia',
     'balkans',
     'philippines',
-    'maroko',
-    'random photos'
+    'maroko'
 ]
 
-def compress_image(input_path, output_path):
+def compress_image(input_path, output_path, max_width=None, max_height=None, quality=None):
     """Kompresuje pojedynczy obraz"""
     try:
+        # Użyj domyślnych wartości jeśli nie podano
+        max_width = max_width or DEFAULT_MAX_WIDTH
+        max_height = max_height or DEFAULT_MAX_HEIGHT
+        quality = quality or DEFAULT_QUALITY
+        
         # Otwórz obraz
         img = Image.open(input_path)
         
@@ -50,14 +63,14 @@ def compress_image(input_path, output_path):
         
         # Oblicz nowe wymiary zachowując proporcje
         width, height = img.size
-        if width > MAX_WIDTH or height > MAX_HEIGHT:
-            ratio = min(MAX_WIDTH / width, MAX_HEIGHT / height)
+        if width > max_width or height > max_height:
+            ratio = min(max_width / width, max_height / height)
             new_width = int(width * ratio)
             new_height = int(height * ratio)
             img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
         
         # Zapisz z kompresją
-        img.save(output_path, 'JPEG', quality=QUALITY, optimize=True)
+        img.save(output_path, 'JPEG', quality=quality, optimize=True)
         
         # Pobierz nowy rozmiar
         new_size = os.path.getsize(output_path)
@@ -80,6 +93,17 @@ def process_folder(folder_path):
     folder_name = os.path.basename(folder_path)
     print(f'\n📁 Przetwarzanie folderu: {folder_name}')
     
+    # Sprawdź czy folder ma specjalne ustawienia
+    settings = EAGER_LOADING_FOLDERS.get(folder_name, {})
+    max_width = settings.get('max_width', DEFAULT_MAX_WIDTH)
+    max_height = settings.get('max_height', DEFAULT_MAX_HEIGHT)
+    quality = settings.get('quality', DEFAULT_QUALITY)
+    
+    if folder_name in EAGER_LOADING_FOLDERS:
+        print(f'   ⚙️  Ustawienia: {max_width}x{max_height}px, {quality}% jakość (eager loading)')
+    else:
+        print(f'   ⚙️  Ustawienia: {max_width}x{max_height}px, {quality}% jakość (lazy loading)')
+    
     # Znajdź wszystkie pliki JPG
     jpg_files = [f for f in os.listdir(folder_path) 
                  if f.lower().endswith(('.jpg', '.jpeg'))]
@@ -97,7 +121,7 @@ def process_folder(folder_path):
         
         print(f'   Kompresowanie: {file}...', end=' ')
         
-        result = compress_image(input_path, output_path)
+        result = compress_image(input_path, output_path, max_width, max_height, quality)
         
         if result['success']:
             # Zastąp oryginał zoptymalizowaną wersją
@@ -129,7 +153,8 @@ def process_folder(folder_path):
 
 def main():
     print('🚀 Rozpoczynam kompresję obrazów...')
-    print(f'📐 Ustawienia: {MAX_WIDTH}x{MAX_HEIGHT}px, {QUALITY}% jakość')
+    print(f'📐 Domyślne ustawienia: {DEFAULT_MAX_WIDTH}x{DEFAULT_MAX_HEIGHT}px, {DEFAULT_QUALITY}% jakość')
+    print(f'📐 Eager loading (Namibia, Balkans): 1400x1920px, 85% jakość')
     
     project_root = os.path.dirname(os.path.abspath(__file__))
     results = []
