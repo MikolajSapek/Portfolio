@@ -1187,7 +1187,7 @@ body {
     align-items: center;
     z-index: 5; /* Higher z-index - photos cover text during scroll */
     will-change: transform;
-    pointer-events: none;
+    pointer-events: auto; /* Enable clicks on gallery items */
     opacity: 1;
     visibility: visible;
     background-color: transparent; /* Przezroczyste tło - brak białych szpar */
@@ -1203,6 +1203,8 @@ body {
     justify-content: center;
     margin: 0; /* Usunięto marginesy - brak białych szpar */
     padding: 0; /* Usunięto padding - brak białych szpar */
+    pointer-events: auto; /* Enable clicks on photo items */
+    cursor: pointer;
 }
 
 .gallery-photo-item img {
@@ -1214,6 +1216,8 @@ body {
     margin: 0; /* Usunięto marginesy - brak białych szpar */
     padding: 0; /* Usunięto padding - brak białych szpar */
     vertical-align: top; /* Usunięcie odstępu pod zdjęciem */
+    pointer-events: auto; /* Enable clicks on images */
+    cursor: pointer;
 }
 
 /* Album Badge - kolorowe oznaczenie z rokiem i nazwą albumu (stare - do usunięcia) */

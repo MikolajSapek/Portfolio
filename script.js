@@ -1652,8 +1652,34 @@ function initScrollBasedAlbum() {
         ScrollTrigger.refresh();
     }
 
+    // Add click handlers to images for lightbox - after images are loaded
+    const addClickHandlers = () => {
+        photoItems.forEach((item, index) => {
+            const img = item.querySelector('img');
+            if (img && !item.dataset.clickHandlerAdded) {
+                img.style.cursor = 'pointer';
+                item.style.cursor = 'pointer';
+                const clickHandler = (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    const fullSrc = img.src;
+                    const caption = img.alt || photosToShow[index].caption || `Photo ${index + 1}`;
+                    if (window.openLightbox) {
+                        window.openLightbox(fullSrc, caption, photosToShow, index);
+                    }
+                };
+                img.addEventListener('click', clickHandler);
+                item.addEventListener('click', clickHandler);
+                item.dataset.clickHandlerAdded = 'true';
+            }
+        });
+    };
+
     // Użyj ulepszonej funkcji waitForImages z lepszą obsługą błędów
-    waitForImages(images, initScrollTrigger, 3000);
+    waitForImages(images, () => {
+        initScrollTrigger();
+        addClickHandlers(); // Add click handlers after images are loaded
+    }, 3000);
 
     // Refresh ScrollTrigger on resize - użyj debounce
     window.addEventListener('resize', debounce(() => {
@@ -1813,8 +1839,34 @@ function initEuropeScrollAlbum() {
         ScrollTrigger.refresh();
     }
 
+    // Add click handlers to images for lightbox - after images are loaded
+    const addClickHandlers = () => {
+        photoItems.forEach((item, index) => {
+            const img = item.querySelector('img');
+            if (img && !item.dataset.clickHandlerAdded) {
+                img.style.cursor = 'pointer';
+                item.style.cursor = 'pointer';
+                const clickHandler = (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    const fullSrc = img.src;
+                    const caption = img.alt || chapter.photos[index].caption || `Photo ${index + 1}`;
+                    if (window.openLightbox) {
+                        window.openLightbox(fullSrc, caption, chapter.photos, index);
+                    }
+                };
+                img.addEventListener('click', clickHandler);
+                item.addEventListener('click', clickHandler);
+                item.dataset.clickHandlerAdded = 'true';
+            }
+        });
+    };
+
     // Użyj ulepszonej funkcji waitForImages z lepszą obsługą błędów - SAME AS PARIS
-    waitForImages(images, initScrollTrigger, 3000);
+    waitForImages(images, () => {
+        initScrollTrigger();
+        addClickHandlers(); // Add click handlers after images are loaded
+    }, 3000);
 
     // Refresh ScrollTrigger on resize - użyj debounce - SAME AS PARIS
     window.addEventListener('resize', debounce(() => {
@@ -1941,6 +1993,8 @@ function initLightbox() {
     let currentIndex = 0;
 
     const openLightbox = (src, caption, gallery = null, index = 0) => {
+        currentGallery = gallery;
+        currentIndex = index;
         imageEl.src = src;
         imageEl.alt = caption;
         captionEl.textContent = caption;
