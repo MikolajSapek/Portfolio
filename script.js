@@ -349,7 +349,7 @@ const chapters = {
     },
     'after-sun': {
         title: 'Asia',
-        count: 19,
+        count: 18,
         date: 'June 2024',
         description: 'Later, when I looked at the photographs again, I realized it wasn\'t just the light or the sea behind you. It was the way your presence held the silence, how the air seemed to pause when you entered the frame.',
         folder: 'asia',
@@ -371,7 +371,6 @@ const chapters = {
             'IMG_6390.jpg',
             'IMG_6392.jpg',
             'IMG_6394.jpg',
-            'IMG_6398.jpg',
             'IMG_6407.jpg'
         ])
     },
