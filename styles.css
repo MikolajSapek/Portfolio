@@ -2296,6 +2296,36 @@ body {
     .nav-link {
         font-size: 0.9rem;
     }
+
+    /* Intro text - stack on mobile */
+    .intro-text-below-photos {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0 1.5rem;
+    }
+
+    .intro-text-item {
+        font-size: 0.8rem;
+    }
+
+    .intro-title-below {
+        font-size: 1.6rem;
+    }
+
+    /* Albums preview - stack on mobile */
+    .albums-preview-section {
+        flex-direction: column;
+        padding: 2rem 1.5rem;
+    }
+
+    .albums-list {
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .album-hover-image {
+        display: none;
+    }
 }
 
 /* Exploding Grid for Horizon */
@@ -2874,138 +2904,310 @@ body {
     }
     
     /* Scroll-based albums (Paris, Europe) */
-    .scroll-wrapper {
-        padding: 2rem 1rem;
+    .scroll-wrapper,
+    #europe-scroll-wrapper {
+        padding: 0;
     }
-    
+
+    .scroll-album-text,
+    #europe-text {
+        max-width: 85vw;
+        padding: 1.5rem;
+    }
+
     .scroll-album-title {
-        font-size: 2rem;
+        font-size: 0.8rem;
     }
-    
+
     .scroll-album-date {
-        font-size: 0.9rem;
+        font-size: 1.8rem;
     }
-    
+
     .scroll-album-description {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        line-height: 1.6;
     }
-    
+
+    .gallery-photo-item {
+        height: 30vh;
+        min-width: 180px;
+    }
+
     /* Horizontal Gallery (Namibia) */
     .horizontal-gallery-section {
         height: auto;
     }
-    
+
     .horizontal-gallery-wrapper {
         height: auto;
     }
-    
+
     .horizontal-album-panel {
         width: 100vw;
         height: 100vh;
         padding: 1rem;
     }
-    
+
     .horizontal-gallery-intro {
         width: 90vw;
         font-size: 1.2rem;
         padding: 2rem 1rem;
     }
-    
+
     .horizontal-gallery-intro h1 {
         font-size: 1.5rem;
     }
-    
+
     /* Switch Gallery (Chicago) */
     .switch-gallery {
         min-height: 100vh;
     }
-    
+
     .switch-gallery-inner {
         flex-direction: column;
         min-height: 100vh;
     }
-    
+
     .switch-half {
         min-height: 50vh;
     }
-    
+
     /* Menu Modal */
     .menu-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
         padding: 2rem 1rem;
     }
-    
+
     .menu-item h2 {
         font-size: 1.5rem;
     }
-    
-    /* Albums Preview */
-    .albums-list {
+
+    /* Albums Preview Section */
+    .albums-preview-section {
+        flex-direction: column;
         padding: 2rem 1rem;
     }
-    
-    .album-item {
-        font-size: 1rem;
-        padding: 1rem;
+
+    .albums-list {
+        width: 100%;
+        padding: 0;
+        padding-right: 0;
     }
-    
+
+    .album-hover-image {
+        display: none;
+    }
+
+    .album-item {
+        font-size: 1.2rem;
+        padding: 0.75rem 0;
+    }
+
+    .album-count {
+        font-size: 1rem;
+    }
+
     /* Footer */
     .footer-container {
         flex-direction: column;
     }
-    
+
+    .footer-left,
+    .footer-right {
+        width: 100%;
+    }
+
     .footer-left {
-        height: 40vh;
+        height: 35vh;
     }
-    
+
     .footer-image-wrapper {
-        height: 40vh;
+        height: 35vh;
     }
-    
+
     .footer-overlay-box {
-        padding: 1.5rem;
-        max-width: 95%;
+        padding: 1.25rem;
+        max-width: 80%;
+        right: 5%;
     }
-    
+
     .footer-title {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
-    
+
+    .footer-meta {
+        font-size: 0.75rem;
+    }
+
+    .footer-subtitle {
+        font-size: 1rem;
+    }
+
+    .footer-right {
+        padding: 2rem 1.5rem;
+        min-height: auto;
+    }
+
     /* Exploding Grid (Maroko) */
     .exploding-grid-container {
         padding: 4rem 1rem 2rem;
+        min-height: auto;
+        padding-top: 5rem;
     }
-    
+
     .exploding-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        gap: 0.75rem;
     }
-    
+
     /* After Sun (Asia) */
+    #after-sun {
+        min-height: auto;
+        height: auto;
+    }
+
     #after-sun .project-gallery {
         grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
         gap: 1rem;
+        padding: 1rem;
+        height: auto;
     }
-    
+
+    #after-sun .after-sun-item {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .reveal-overlay {
+        display: none !important;
+    }
+
     /* Korea Album */
     .album-content-container {
         flex-direction: column;
     }
-    
+
     .content-scroll-wrapper,
     .sticky-visual-panel {
         width: 100%;
         position: static;
     }
-    
-    .sticky-visual-panel {
-        min-height: 40vh;
-        padding: 2rem 1rem;
+
+    .grid-item-pair {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
-    
+
+    .white-card {
+        min-height: 220px;
+    }
+
+    .sticky-visual-panel {
+        min-height: 30vh;
+        padding: 2rem 1rem;
+        order: -1;
+    }
+
     .visual-title {
         font-size: 2rem;
+    }
+
+    /* Balkans horizontal scroll */
+    #dead-sea .project-gallery {
+        padding-right: 2rem !important;
+        gap: 2rem;
+    }
+
+    #dead-sea .gallery-item {
+        height: 200px;
+    }
+
+    /* Philippines & Iceland */
+    #closing .gallery-item,
+    #iceland .gallery-item {
+        width: 100%;
+        height: 200px;
+    }
+
+    #closing .project-gallery,
+    #iceland .project-gallery {
+        gap: 1.5rem;
+    }
+
+    /* Album badge stamps */
+    .album-badge-stamp {
+        width: 40px;
+        height: 40px;
+        top: 1rem;
+        right: 1rem;
+    }
+
+    #after-sun .album-badge-stamp {
+        width: 70px;
+        height: 70px;
+    }
+
+    /* Lightbox */
+    .lightbox-body {
+        max-width: 95vw;
+        max-height: 90vh;
+    }
+
+    .lightbox-close {
+        top: -2rem;
+        right: 0;
+        font-size: 1.8rem;
+    }
+}
+
+/* Tablet fix (481px - 768px) - albums preview & Korea */
+@media (min-width: 481px) and (max-width: 768px) {
+    .albums-preview-section {
+        flex-direction: column;
+        padding: 2rem;
+    }
+
+    .albums-list {
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .album-hover-image {
+        display: none;
+    }
+
+    #after-sun {
+        min-height: auto;
+        height: auto;
+    }
+
+    #after-sun .project-gallery {
+        grid-template-rows: auto;
+        height: auto;
+    }
+
+    .reveal-overlay {
+        display: none !important;
+    }
+
+    #after-sun .after-sun-item {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .gallery-photo-item {
+        height: 35vh;
+    }
+
+    .grid-item-pair {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .sticky-visual-panel {
+        order: -1;
     }
 }
 
