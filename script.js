@@ -687,8 +687,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initMenuModal();
     initSmoothScroll();
     initAlbumsPreview();
-    initScrollBasedAlbum();
-    initEuropeScrollAlbum();
+    initScrollBasedAlbum(() => {
+        initEuropeScrollAlbum();
+    });
     initSwitchGallery();
 
     // Inicjalizuj preloading albumów (2 albumy do przodu)
@@ -1491,9 +1492,10 @@ function initAlbumsPreview() {
 }
 
 // Scroll-based album section with GSAP ScrollTrigger
-function initScrollBasedAlbum() {
+function initScrollBasedAlbum(onReady) {
     // Register ScrollTrigger plugin
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        if (onReady) onReady();
         return;
     }
 
@@ -1505,12 +1507,14 @@ function initScrollBasedAlbum() {
     const albumSection = document.querySelector('.scroll-based-album');
 
     if (!scrollWrapper || !textContainer || !horizontalGallery || !albumSection) {
+        if (onReady) onReady();
         return;
     }
 
     // Load photos
     const chapter = chapters['people'];
     if (!chapter || !chapter.photos.length) {
+        if (onReady) onReady();
         return;
     }
 
@@ -1678,6 +1682,7 @@ function initScrollBasedAlbum() {
     waitForImages(images, () => {
         initScrollTrigger();
         addClickHandlers(); // Add click handlers after images are loaded
+        if (onReady) onReady();
     }, 3000);
 
     // Refresh ScrollTrigger on resize - użyj debounce
