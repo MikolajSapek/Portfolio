@@ -3434,3 +3434,107 @@ body {
     }
 }
 
+/* Mobile vertical fallback for GSAP scroll albums */
+.mobile-vertical {
+    min-height: auto !important;
+    height: auto !important;
+}
+
+.mobile-vertical .scroll-wrapper,
+.mobile-vertical #europe-scroll-wrapper {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.mobile-vertical .scroll-album-text,
+.mobile-vertical #europe-text {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    max-width: 100%;
+    width: 100%;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.mobile-vertical .horizontal-gallery,
+.mobile-vertical #europe-horizontal-gallery {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.mobile-vertical .gallery-photo-item {
+    width: 100%;
+    height: auto !important;
+    min-width: 0;
+    flex-shrink: 1;
+    cursor: pointer;
+}
+
+.mobile-vertical .gallery-photo-item img {
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    object-fit: contain;
+}
+
+/* Namibia mobile vertical */
+.horizontal-gallery-section.mobile-vertical {
+    height: auto !important;
+    overflow: visible !important;
+    pointer-events: auto;
+}
+
+.horizontal-gallery-section.mobile-vertical .horizontal-gallery-wrapper {
+    height: auto !important;
+}
+
+.horizontal-gallery-section.mobile-vertical .horizontal-gallery-sticky {
+    position: relative !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+.horizontal-gallery-section.mobile-vertical .horizontal-gallery-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    transform: none !important;
+    will-change: auto;
+}
+
+.horizontal-gallery-section.mobile-vertical .gallery-photo-item {
+    width: 100%;
+    height: auto !important;
+    min-width: 0;
+    cursor: pointer;
+}
+
+.horizontal-gallery-section.mobile-vertical .gallery-photo-item img {
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    object-fit: contain;
+}
+

@@ -1493,14 +1493,6 @@ function initAlbumsPreview() {
 
 // Scroll-based album section with GSAP ScrollTrigger
 function initScrollBasedAlbum(onReady) {
-    // Register ScrollTrigger plugin
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-        if (onReady) onReady();
-        return;
-    }
-
-    gsap.registerPlugin(ScrollTrigger);
-
     const scrollWrapper = document.getElementById('scroll-wrapper');
     const textContainer = document.getElementById('people-text');
     const horizontalGallery = document.getElementById('horizontal-gallery');
@@ -1511,12 +1503,40 @@ function initScrollBasedAlbum(onReady) {
         return;
     }
 
-    // Load photos
     const chapter = chapters['people'];
     if (!chapter || !chapter.photos.length) {
         if (onReady) onReady();
         return;
     }
+
+    // Mobile: skip GSAP, render vertical gallery
+    if (window.innerWidth <= 768) {
+        albumSection.classList.add('mobile-vertical');
+        horizontalGallery.innerHTML = chapter.photos.slice(0, 8).map((photo, index) => {
+            return `<div class="gallery-photo-item" data-index="${index}">
+                <img src="${photo.src}" alt="${photo.caption}" loading="eager">
+            </div>`;
+        }).join('');
+        // Lightbox click handlers
+        horizontalGallery.querySelectorAll('.gallery-photo-item').forEach((item, index) => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                if (img && window.openLightbox) {
+                    window.openLightbox(img.src, img.alt, chapter.photos.slice(0, 8), index);
+                }
+            });
+        });
+        if (onReady) onReady();
+        return;
+    }
+
+    // Desktop: GSAP ScrollTrigger horizontal scroll
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        if (onReady) onReady();
+        return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
 
     // Create photo elements - limit to 8 photos
     // Dla Paris - załaduj wszystkie obrazy od razu (eager loading) żeby nie skakały
@@ -1693,13 +1713,6 @@ function initScrollBasedAlbum(onReady) {
 
 // Scroll-based album section for Europe - animation from left side (opposite of Paris)
 function initEuropeScrollAlbum() {
-    // Register ScrollTrigger plugin
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-        return;
-    }
-
-    gsap.registerPlugin(ScrollTrigger);
-
     const scrollWrapper = document.getElementById('europe-scroll-wrapper');
     const textContainer = document.getElementById('europe-text');
     const horizontalGallery = document.getElementById('europe-horizontal-gallery');
@@ -1709,11 +1722,36 @@ function initEuropeScrollAlbum() {
         return;
     }
 
-    // Load photos
     const chapter = chapters['europe'];
     if (!chapter || !chapter.photos.length) {
         return;
     }
+
+    // Mobile: skip GSAP, render vertical gallery
+    if (window.innerWidth <= 768) {
+        albumSection.classList.add('mobile-vertical');
+        horizontalGallery.innerHTML = chapter.photos.map((photo, index) => {
+            return `<div class="gallery-photo-item" data-index="${index}">
+                <img src="${photo.src}" alt="${photo.caption}" loading="eager">
+            </div>`;
+        }).join('');
+        horizontalGallery.querySelectorAll('.gallery-photo-item').forEach((item, index) => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                if (img && window.openLightbox) {
+                    window.openLightbox(img.src, img.alt, chapter.photos, index);
+                }
+            });
+        });
+        return;
+    }
+
+    // Desktop: GSAP ScrollTrigger horizontal scroll
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
 
     // Create photo elements - ALL photos from album (22 photos)
     // Dla Europe - załaduj wszystkie obrazy od razu (eager loading) żeby nie skakały
@@ -2113,6 +2151,34 @@ horizontalAlbums.forEach((album, index) => {
 });
 
 function initHorizontalGallery() {
+    // Mobile: skip GSAP, render simple vertical gallery
+    if (window.innerWidth <= 768) {
+        const container = document.getElementById('horizontal-gallery-container');
+        const section = document.getElementById('horizontal-gallery-section');
+        if (!container || !section || !horizontalAlbums || horizontalAlbums.length === 0) return;
+
+        section.classList.add('mobile-vertical');
+        const allImages = [];
+        horizontalAlbums.forEach(album => {
+            album.images.forEach(src => allImages.push(src));
+        });
+        container.innerHTML = allImages.map((src, i) => {
+            return `<div class="gallery-photo-item" data-index="${i}">
+                <img src="${src}" alt="Namibia ${i + 1}" loading="eager">
+            </div>`;
+        }).join('');
+        container.querySelectorAll('.gallery-photo-item').forEach((item, index) => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                if (img && window.openLightbox) {
+                    const photoObjects = allImages.map(s => ({ src: s, caption: '' }));
+                    window.openLightbox(img.src, img.alt, photoObjects, index);
+                }
+            });
+        });
+        return;
+    }
+
     console.log('[Namibia] Starting initialization...');
 
     // Create debug info element for Safari - make it more visible
@@ -2134,7 +2200,6 @@ function initHorizontalGallery() {
     };
 
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-        // GSAP or ScrollTrigger not loaded
         const errorMsg = 'GSAP or ScrollTrigger not loaded';
         console.error('[Namibia] ' + errorMsg);
         updateDebug('<span style="color: red;">ERROR: ' + errorMsg + '</span>');
@@ -2156,7 +2221,6 @@ function initHorizontalGallery() {
     updateDebug('Elements: W=' + (wrapper ? '✓' : '✗') + ' C=' + (container ? '✓' : '✗') + ' S=' + (section ? '✓' : '✗'));
 
     if (!wrapper || !container || !section) {
-        // Horizontal gallery elements not found
         const errorMsg = 'Gallery elements not found';
         console.error('[Namibia] ' + errorMsg, elementsFound);
         updateDebug('<span style="color: red;">ERROR: ' + errorMsg + '</span>');
