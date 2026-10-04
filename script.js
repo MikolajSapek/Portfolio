@@ -107,6 +107,13 @@ const debounce = (func, wait) => {
     };
 };
 
+// Telefon = media query, nie innerWidth: na mobile innerWidth rośnie, gdy treść wystaje poza ekran
+const isMobileViewport = () => window.matchMedia('(max-width: 768px)').matches;
+
+// Telefon: 6 miniatur + 5 odstępów musi zmieścić się w szerokości gridu startowego
+const MOBILE_THUMB_GAP = 8;
+const mobileThumbSize = (gridWidth) => (gridWidth - 5 * MOBILE_THUMB_GAP) / 6;
+
 // Cache dla zoptymalizowanych obrazów - żeby nie przetwarzać ich wielokrotnie
 const optimizedImageCache = new Map();
 
@@ -755,14 +762,17 @@ function loadMainPhotos() {
     const cellHeight = cellWidth;
 
     // Rozmiar zdjęć - pomniejszony
-    const photoSize = cellWidth * 0.6; // Zwiększone z 0.55 na 0.6
+    const mobile = isMobileViewport();
+    const photoSize = mobile ? mobileThumbSize(grid.offsetWidth) : cellWidth * 0.6; // Zwiększone z 0.55 na 0.6
+    // Telefon: start rzędów liczony tak, żeby stos zdjęć (5 x 15px przesunięcia) nie wystawał poza ekran
+    const startSpan = mobile ? grid.offsetWidth - photoSize - 5 * 15 : gridWidth;
 
     // Oblicz pozycje startowe dla każdego rzędu - większe odstępy między nimi
     // Użyj szerokości kontenera dla symetrii na wszystkich ekranach
     const startPositions = [
-        gridWidth * 0.1,  // Pierwszy rząd - lewa strona (zmienione z 0.15)
-        gridWidth * 0.5,  // Drugi rząd - środek (zmienione z 0.45)
-        gridWidth * 0.8   // Trzeci rząd - prawa strona (zmienione z 0.9, żeby nie dotykał krawędzi)
+        startSpan * 0.1,  // Pierwszy rząd - lewa strona (zmienione z 0.15)
+        startSpan * 0.5,  // Drugi rząd - środek (zmienione z 0.45)
+        startSpan * 0.8   // Trzeci rząd - prawa strona (zmienione z 0.9, żeby nie dotykał krawędzi)
     ];
 
     items.forEach((item, index) => {
@@ -776,7 +786,7 @@ function loadMainPhotos() {
         const leftPos = baseLeftPos + offset;
 
         // Oblicz końcowy rozmiar zdjęć (taki sam jak będzie w animacji rozwijania)
-        const finalPhotoSize = cellWidth * 0.6; // Zwiększone z 0.55 na 0.6
+        const finalPhotoSize = photoSize;
         const navbarHeight = 80; // Wysokość paska nawigacji w px
         const numRows = 3; // Liczba rzędów
         const rowSpacing = 35; // Zmniejszony odstęp pionowy między rzędami (px)
@@ -850,7 +860,7 @@ function animatePhotosToGrid() {
 
     // 12 kolumn, ale każde zdjęcie zajmuje 2 kolumny = efekt 6 kolumn z mniejszymi zdjęciami
     let numColumns;
-    if (window.innerWidth > 768) {
+    if (!isMobileViewport()) {
         numColumns = 12; // 12 kolumn, każde zdjęcie zajmuje 2 kolumny
     } else {
         numColumns = 6; // Na telefonach 6 kolumn, każde zdjęcie zajmuje 2 kolumny
@@ -888,22 +898,23 @@ function animatePhotosToGrid() {
         const colInRow = index % photosPerRow;
 
         // Rozmiar zdjęć - taki sam jak w slideshow (zmniejszony)
-        const photoSize = cellWidth * 0.6; // Zwiększone z 0.55 na 0.6
+        const mobile = isMobileViewport();
+        const photoSize = mobile ? mobileThumbSize(grid.offsetWidth) : cellWidth * 0.6; // Zwiększone z 0.55 na 0.6
 
         // Oblicz pozycję docelową - zdjęcia rozwijają się w różnych kierunkach
         const direction = expandDirections[row];
 
         // Oblicz docelową pozycję w zależności od kierunku
         // Większe odstępy między zdjęciami w poziomie
-        const extraSpacing = 80; // Zwiększony odstęp między zdjęciami (px) - zwiększony z 40 na 80
-        const sideMargin = 5; // Minimalny odstęp od krawędzi (px) - zmniejszony z 20 na 5
+        const extraSpacing = mobile ? MOBILE_THUMB_GAP : 80; // Zwiększony odstęp między zdjęciami (px) - zwiększony z 40 na 80
+        const sideMargin = mobile ? 0 : 5; // Minimalny odstęp od krawędzi (px) - zmniejszony z 20 na 5
 
         // Oblicz całkowitą szerokość wszystkich zdjęć z odstępami
         const totalPhotosWidth = photosPerRow * photoSize + (photosPerRow - 1) * extraSpacing;
 
         // Wyśrodkuj zdjęcia z symetrycznymi marginesami po obu stronach
         // Użyj rzeczywistej szerokości kontenera dla wyśrodkowania (automatycznie dostosowuje się do ekranu)
-        const actualContainerWidth = container ? container.offsetWidth : gridWidth;
+        const actualContainerWidth = mobile ? grid.offsetWidth : (container ? container.offsetWidth : gridWidth);
         const horizontalOffset = (actualContainerWidth - totalPhotosWidth) / 2;
         // Użyj mniejszej wartości - zdjęcia bliżej krawędzi, ale zawsze wyśrodkowane
         const finalHorizontalOffset = Math.max(sideMargin, horizontalOffset);
@@ -1510,7 +1521,7 @@ function initScrollBasedAlbum(onReady) {
     }
 
     // Mobile: skip GSAP, render vertical gallery
-    if (window.innerWidth <= 768) {
+    if (isMobileViewport()) {
         albumSection.classList.add('mobile-vertical');
         horizontalGallery.innerHTML = chapter.photos.slice(0, 8).map((photo, index) => {
             return `<div class="gallery-photo-item" data-index="${index}">
@@ -1728,7 +1739,7 @@ function initEuropeScrollAlbum() {
     }
 
     // Mobile: skip GSAP, render vertical gallery
-    if (window.innerWidth <= 768) {
+    if (isMobileViewport()) {
         albumSection.classList.add('mobile-vertical');
         horizontalGallery.innerHTML = chapter.photos.map((photo, index) => {
             return `<div class="gallery-photo-item" data-index="${index}">
@@ -2152,7 +2163,7 @@ horizontalAlbums.forEach((album, index) => {
 
 function initHorizontalGallery() {
     // Mobile: skip GSAP, render simple vertical gallery
-    if (window.innerWidth <= 768) {
+    if (isMobileViewport()) {
         const container = document.getElementById('horizontal-gallery-container');
         const section = document.getElementById('horizontal-gallery-section');
         if (!container || !section || !horizontalAlbums || horizontalAlbums.length === 0) return;
@@ -2699,6 +2710,20 @@ function initExplodingGrid(chapterId, photos) {
 
     if (thumbnails.length === 0) return;
 
+    // Telefon: bez rozsypywania stosu (losowe pozycje 200px + 250px odstępu nie mieszczą się na wąskim ekranie)
+    // - zwykła siatka z CSS, tap otwiera lightbox
+    if (isMobileViewport()) {
+        grid.classList.add('exploding-grid-expanded');
+        thumbnails.forEach((thumb, index) => {
+            thumb.addEventListener('click', () => {
+                if (window.openLightbox) {
+                    window.openLightbox(thumb.dataset.src, thumb.dataset.caption, photos, index);
+                }
+            });
+        });
+        return;
+    }
+
     // Set up collapsed state (stacked thumbnails)
     grid.classList.add('exploding-grid-collapsed');
     grid.style.position = 'relative';
@@ -3203,4 +3228,9 @@ function initAfterSunReveal() {
 
     // Reset reveal state - photos need to be discovered
     allPhotosRevealed = false;
+
+    // Telefon: nie ma kursora do odkrywania - pokaż zdjęcia od razu (tap otwiera lightbox)
+    if (isMobileViewport()) {
+        revealAllPhotos();
+    }
 }

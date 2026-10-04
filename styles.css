@@ -3546,3 +3546,47 @@ body {
     object-fit: contain;
 }
 
+
+/* ============================================
+   PHONE FIXES (<=768px) - desktop bez zmian
+   ============================================ */
+@media (max-width: 768px) {
+    /* Nic nie może rozpychać strony w bok (clip zamiast hidden, żeby sticky dalej działało) */
+    html,
+    body {
+        overflow-x: clip;
+    }
+
+    /* Balkans: margin auto we flexie wyłączał stretch, galeria brała szerokość treści (1400px) */
+    #dead-sea .project-gallery {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Iceland/Balkans/Philippines: symetryczne marginesy (desktopowy padding-left 2rem przesuwał galerię w prawo) */
+    #iceland .project-entry,
+    #dead-sea .project-entry,
+    #closing .project-entry {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Balkans przewija się w bok - niech zdjęcia dochodzą do prawej krawędzi */
+    #dead-sea .project-entry {
+        padding-right: 0 !important;
+    }
+
+    /* Iceland/Philippines: pełna szerokość i naturalne proporcje zamiast stałej wysokości 200-250px */
+    #iceland .gallery-item,
+    #closing .gallery-item {
+        width: 100%;
+        height: auto;
+    }
+
+    #iceland .project-gallery .gallery-item img,
+    #closing .project-gallery .gallery-item img {
+        width: 100%;
+        height: auto;
+    }
+}
