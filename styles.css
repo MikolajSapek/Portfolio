@@ -3590,3 +3590,28 @@ body {
         height: auto;
     }
 }
+
+/* Telefon: albumy pojawiają się z fade + rozmyciem (timing jak w "Body of Water").
+   html + podwójna klasa podbija specyficzność ponad .lazy-optimized-image.loaded i .gallery-item img */
+@media (max-width: 768px) {
+    html .reveal-pending {
+        transition: opacity 0.84s cubic-bezier(0.47, 0, 0.745, 0.715),
+                    filter 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    html .reveal-pending:not(.is-revealed) {
+        opacity: 0;
+        filter: blur(50px);
+    }
+}
+
+/* Telefon: parallax w kadrze - ramka przycina, zdjęcie powiększone o zapas na ruch (JS: MOBILE_PARALLAX_SCALE) */
+@media (max-width: 768px) {
+    .parallax-frame {
+        overflow: hidden;
+    }
+
+    .parallax-frame img {
+        transform: scale(1.12);
+    }
+}

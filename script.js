@@ -718,6 +718,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // więc dajemy czas na pełne załadowanie i odświeżenie przed inicjalizacją Namibii
     setTimeout(() => {
         initHorizontalGallery(); // Inicjalizacja Namibii po ustabilizowaniu Korei
+        initMobileReveal(); // Po Namibii - wszystkie albumy są już w DOM
+        initMobileParallax();
         // Optymalizuj obrazy Namibii po załadowaniu
         setTimeout(() => {
             optimizeAllLazyImages();
@@ -3233,4 +3235,106 @@ function initAfterSunReveal() {
     if (isMobileViewport()) {
         revealAllPhotos();
     }
+}
+
+// ============================================
+// TELEFON: albumy pojawiają się z fade + rozmyciem (timing jak w "Body of Water")
+// ============================================
+const MOBILE_REVEAL_TARGETS = [
+    '.chapter-section .project-header',          // tytuły: Iceland, Chicago, Asia, Balkans, Philippines, Maroko
+    '.scroll-album-text > *',                    // Paris, Europe
+    '.visual-content',                           // Korea
+    '.mobile-vertical .gallery-photo-item img',  // Paris, Europe, Namibia
+    '.project-gallery .gallery-item img',        // Iceland, Asia, Balkans, Philippines
+    '.switch-half',                              // Chicago
+    '.white-card',                               // Korea
+    '.exploding-thumbnail'                       // Maroko
+].join(', ');
+const MOBILE_REVEAL_STAGGER = 0.2;     // s - odstęp między elementami wchodzącymi razem (np. 2 kolumny)
+const MOBILE_REVEAL_FALLBACK = 3000;   // ms - pokaż mimo wszystko, gdy zdjęcie się nie doładuje
+
+// Pokaż element dopiero po załadowaniu zdjęcia - inaczej efekt odpaliłby się na szarym placeholderze
+function revealWhenLoaded(el, delay) {
+    const img = el.tagName === 'IMG' ? el : el.querySelector('img');
+    const isLoaded = () => !img || (img.complete && !img.hasAttribute('data-src'));
+    let done = false;
+    const show = () => {
+        if (done) return;
+        done = true;
+        el.style.transitionDelay = `${delay}s`;
+        el.classList.add('is-revealed');
+    };
+
+    if (isLoaded()) {
+        show();
+        return;
+    }
+    img.addEventListener('load', () => isLoaded() && show());
+    img.addEventListener('error', show);
+    setTimeout(show, MOBILE_REVEAL_FALLBACK);
+}
+
+function initMobileReveal() {
+    if (!isMobileViewport() || !('IntersectionObserver' in window)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.filter(entry => entry.isIntersecting).forEach((entry, i) => {
+            observer.unobserve(entry.target);
+            revealWhenLoaded(entry.target, Math.min(i, 3) * MOBILE_REVEAL_STAGGER);
+        });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll(MOBILE_REVEAL_TARGETS).forEach(el => {
+        el.classList.add('reveal-pending');
+        observer.observe(el);
+    });
+}
+
+// ============================================
+// TELEFON: parallax w kadrze - zdjęcie przesuwa się wolniej niż jego ramka (realevate.agency, przez details_so)
+// ============================================
+const MOBILE_PARALLAX_FRAMES = [
+    '.mobile-vertical .gallery-photo-item',  // Paris, Europe, Namibia
+    '#iceland .gallery-item',
+    '#closing .gallery-item'                 // Philippines
+].join(', ');
+const MOBILE_PARALLAX_SCALE = 1.12;   // zapas kadru na ruch: 6% z każdej strony (musi być w CSS .parallax-frame img)
+const MOBILE_PARALLAX_SHIFT = 0.05;   // max przesunięcie zdjęcia = 5% wysokości ramki (< 6% zapasu)
+
+function initMobileParallax() {
+    if (!isMobileViewport() || !('IntersectionObserver' in window)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const visible = new Set();
+    let ticking = false;
+
+    const update = () => {
+        ticking = false;
+        const viewportH = window.innerHeight;
+        visible.forEach(frame => {
+            const rect = frame.getBoundingClientRect();
+            // 1 = ramka wchodzi dołem ekranu, -1 = wychodzi górą
+            const progress = (rect.top + rect.height / 2 - viewportH / 2) / (viewportH / 2 + rect.height / 2);
+            const offset = -progress * MOBILE_PARALLAX_SHIFT * rect.height;
+            frame.querySelector('img').style.transform = `translateY(${offset.toFixed(1)}px) scale(${MOBILE_PARALLAX_SCALE})`;
+        });
+    };
+    const requestUpdate = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => entry.isIntersecting ? visible.add(entry.target) : visible.delete(entry.target));
+        requestUpdate();
+    });
+
+    document.querySelectorAll(MOBILE_PARALLAX_FRAMES).forEach(frame => {
+        if (!frame.querySelector('img')) return;
+        frame.classList.add('parallax-frame');
+        observer.observe(frame);
+    });
+    window.addEventListener('scroll', requestUpdate, { passive: true });
 }
