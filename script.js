@@ -113,6 +113,8 @@ const isMobileViewport = () => window.matchMedia('(max-width: 768px)').matches;
 // Telefon: 6 miniatur + 5 odstępów musi zmieścić się w szerokości gridu startowego
 const MOBILE_THUMB_GAP = 8;
 const mobileThumbSize = (gridWidth) => (gridWidth - 5 * MOBILE_THUMB_GAP) / 6;
+// Telefon: pasek nawigacji ma ~96px - pierwszy rząd miniatur musi zacząć się pod nim (nie zasłaniać logo "Exposition")
+const MOBILE_INTRO_TOP_MARGIN = 10;
 
 // Cache dla zoptymalizowanych obrazów - żeby nie przetwarzać ich wielokrotnie
 const optimizedImageCache = new Map();
@@ -718,8 +720,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // więc dajemy czas na pełne załadowanie i odświeżenie przed inicjalizacją Namibii
     setTimeout(() => {
         initHorizontalGallery(); // Inicjalizacja Namibii po ustabilizowaniu Korei
-        initMobileReveal(); // Po Namibii - wszystkie albumy są już w DOM
-        initMobileParallax();
+        initMobileScrollFx(); // Po Namibii - wszystkie albumy są już w DOM
         // Optymalizuj obrazy Namibii po załadowaniu
         setTimeout(() => {
             optimizeAllLazyImages();
@@ -792,7 +793,7 @@ function loadMainPhotos() {
         const navbarHeight = 80; // Wysokość paska nawigacji w px
         const numRows = 3; // Liczba rzędów
         const rowSpacing = 35; // Zmniejszony odstęp pionowy między rzędami (px)
-        const topMargin = -70; // Ujemny odstęp - zdjęcia jeszcze bliżej napisu
+        const topMargin = mobile ? MOBILE_INTRO_TOP_MARGIN : -70; // Ujemny odstęp - zdjęcia jeszcze bliżej napisu
 
         // Oblicz pozycję top dla każdego rzędu - zdjęcia bliżej górnej granicy
         const topPos = navbarHeight + topMargin + row * (finalPhotoSize + rowSpacing);
@@ -936,7 +937,7 @@ function animatePhotosToGrid() {
         const navbarHeight = 80;
         const numRows = 3; // Liczba rzędów
         const rowSpacing = 35; // Zmniejszony odstęp pionowy między rzędami (px)
-        const topMargin = -70; // Ujemny odstęp - zdjęcia jeszcze bliżej napisu
+        const topMargin = mobile ? MOBILE_INTRO_TOP_MARGIN : -70; // Ujemny odstęp - zdjęcia jeszcze bliżej napisu
 
         // Oblicz pozycję top dla każdego rzędu - zdjęcia bliżej górnej granicy
         const topPos = navbarHeight + topMargin + row * (photoSize + rowSpacing);
@@ -3238,86 +3239,88 @@ function initAfterSunReveal() {
 }
 
 // ============================================
-// TELEFON: albumy pojawiają się z fade + rozmyciem (timing jak w "Body of Water")
+// TELEFON: zdjęcia wjeżdżają z boku w rytm przewijania + parallax w kadrze (realevate.agency, przez details_so)
 // ============================================
-const MOBILE_REVEAL_TARGETS = [
-    '.chapter-section .project-header',          // tytuły: Iceland, Chicago, Asia, Balkans, Philippines, Maroko
-    '.scroll-album-text > *',                    // Paris, Europe
-    '.visual-content',                           // Korea
-    '.mobile-vertical .gallery-photo-item img',  // Paris, Europe, Namibia
-    '.project-gallery .gallery-item img',        // Iceland, Asia, Balkans, Philippines
-    '.switch-half',                              // Chicago
-    '.white-card',                               // Korea
-    '.exploding-thumbnail'                       // Maroko
-].join(', ');
-const MOBILE_REVEAL_STAGGER = 0.2;     // s - odstęp między elementami wchodzącymi razem (np. 2 kolumny)
-const MOBILE_REVEAL_FALLBACK = 3000;   // ms - pokaż mimo wszystko, gdy zdjęcie się nie doładuje
-
-// Pokaż element dopiero po załadowaniu zdjęcia - inaczej efekt odpaliłby się na szarym placeholderze
-function revealWhenLoaded(el, delay) {
-    const img = el.tagName === 'IMG' ? el : el.querySelector('img');
-    const isLoaded = () => !img || (img.complete && !img.hasAttribute('data-src'));
-    let done = false;
-    const show = () => {
-        if (done) return;
-        done = true;
-        el.style.transitionDelay = `${delay}s`;
-        el.classList.add('is-revealed');
-    };
-
-    if (isLoaded()) {
-        show();
-        return;
-    }
-    img.addEventListener('load', () => isLoaded() && show());
-    img.addEventListener('error', show);
-    setTimeout(show, MOBILE_REVEAL_FALLBACK);
-}
-
-function initMobileReveal() {
-    if (!isMobileViewport() || !('IntersectionObserver' in window)) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.filter(entry => entry.isIntersecting).forEach((entry, i) => {
-            observer.unobserve(entry.target);
-            revealWhenLoaded(entry.target, Math.min(i, 3) * MOBILE_REVEAL_STAGGER);
-        });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll(MOBILE_REVEAL_TARGETS).forEach(el => {
-        el.classList.add('reveal-pending');
-        observer.observe(el);
-    });
-}
-
-// ============================================
-// TELEFON: parallax w kadrze - zdjęcie przesuwa się wolniej niż jego ramka (realevate.agency, przez details_so)
-// ============================================
-const MOBILE_PARALLAX_FRAMES = [
+const MOBILE_SLIDE_TARGETS = [
     '.mobile-vertical .gallery-photo-item',  // Paris, Europe, Namibia
     '#iceland .gallery-item',
-    '#closing .gallery-item'                 // Philippines
+    '#closing .gallery-item',                // Philippines
+    '#after-sun .after-sun-item img',        // Asia (figure ma transform !important z odkrywania)
+    '.white-card',                           // Korea
+    '.exploding-thumbnail'                   // Maroko
 ].join(', ');
+const MOBILE_PARALLAX_FRAMES = [
+    '.mobile-vertical .gallery-photo-item',
+    '#iceland .gallery-item',
+    '#closing .gallery-item'
+].join(', ');
+// Galerie bez transformacji - IntersectionObserver nie widzi zdjęć przesuniętych poza ekran, więc obserwujemy całe galerie
+const MOBILE_FX_GROUPS = [
+    '#horizontal-gallery', '#europe-horizontal-gallery', '#horizontal-gallery-container',
+    '#iceland-gallery', '#closing-gallery', '#after-sun-gallery',
+    '#hidden-tides-content-grid', '#horizon-gallery'
+].join(', ');
+const MOBILE_SLIDE_DISTANCE = 0.6;    // wjazd kończy się, gdy góra zdjęcia dojdzie do 40% wysokości ekranu
 const MOBILE_PARALLAX_SCALE = 1.12;   // zapas kadru na ruch: 6% z każdej strony (musi być w CSS .parallax-frame img)
 const MOBILE_PARALLAX_SHIFT = 0.05;   // max przesunięcie zdjęcia = 5% wysokości ramki (< 6% zapasu)
 
-function initMobileParallax() {
+const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+function collectMobileFxGroups() {
+    const groups = new Map();
+    const addTo = (el, key, entry) => {
+        const group = el.closest(MOBILE_FX_GROUPS);
+        if (!group) return;
+        if (!groups.has(group)) groups.set(group, { slides: [], frames: [] });
+        groups.get(group)[key].push(entry);
+    };
+
+    document.querySelectorAll(MOBILE_SLIDE_TARGETS).forEach(el => {
+        // Na zmianę z lewej i z prawej; w siatce 2 kolumn = lewa kolumna z lewej, prawa z prawej
+        const item = el.tagName === 'IMG' ? el.parentElement : el;
+        const side = [...item.parentElement.children].indexOf(item) % 2 === 0 ? -1 : 1;
+        el.classList.add('slide-in', side < 0 ? 'slide-from-left' : 'slide-from-right');
+        addTo(el, 'slides', { el, side });
+    });
+    document.querySelectorAll(MOBILE_PARALLAX_FRAMES).forEach(frame => {
+        const img = frame.querySelector('img');
+        if (!img) return;
+        frame.classList.add('parallax-frame');
+        addTo(frame, 'frames', { frame, img });
+    });
+    return groups;
+}
+
+function initMobileScrollFx() {
     if (!isMobileViewport() || !('IntersectionObserver' in window)) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const visible = new Set();
+    const groups = collectMobileFxGroups();
+    const visibleGroups = new Set();
     let ticking = false;
 
     const update = () => {
         ticking = false;
         const viewportH = window.innerHeight;
-        visible.forEach(frame => {
-            const rect = frame.getBoundingClientRect();
-            // 1 = ramka wchodzi dołem ekranu, -1 = wychodzi górą
-            const progress = (rect.top + rect.height / 2 - viewportH / 2) / (viewportH / 2 + rect.height / 2);
-            const offset = -progress * MOBILE_PARALLAX_SHIFT * rect.height;
-            frame.querySelector('img').style.transform = `translateY(${offset.toFixed(1)}px) scale(${MOBILE_PARALLAX_SCALE})`;
+        visibleGroups.forEach(group => {
+            const { slides, frames } = groups.get(group);
+            // Najpierw odczyty, potem zapisy - bez przeliczania layoutu w pętli
+            const slideTops = slides.map(s => s.el.getBoundingClientRect().top);
+            const frameRects = frames.map(f => f.frame.getBoundingClientRect());
+
+            slides.forEach((s, i) => {
+                // 0 = zdjęcie dopiero wchodzi dołem ekranu, 1 = dojechało na miejsce
+                const progress = Math.min(1, Math.max(0, (viewportH - slideTops[i]) / (viewportH * MOBILE_SLIDE_DISTANCE)));
+                s.el.style.transform = progress === 1
+                    ? 'none'
+                    : `translateX(${(s.side * (1 - easeOutCubic(progress)) * 100).toFixed(2)}%)`;
+            });
+            frames.forEach((f, i) => {
+                const r = frameRects[i];
+                // 1 = ramka wchodzi dołem ekranu, -1 = wychodzi górą
+                const progress = (r.top + r.height / 2 - viewportH / 2) / (viewportH / 2 + r.height / 2);
+                f.img.style.transform = `translateY(${(-progress * MOBILE_PARALLAX_SHIFT * r.height).toFixed(1)}px) scale(${MOBILE_PARALLAX_SCALE})`;
+            });
         });
     };
     const requestUpdate = () => {
@@ -3327,14 +3330,9 @@ function initMobileParallax() {
     };
 
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => entry.isIntersecting ? visible.add(entry.target) : visible.delete(entry.target));
+        entries.forEach(entry => entry.isIntersecting ? visibleGroups.add(entry.target) : visibleGroups.delete(entry.target));
         requestUpdate();
     });
-
-    document.querySelectorAll(MOBILE_PARALLAX_FRAMES).forEach(frame => {
-        if (!frame.querySelector('img')) return;
-        frame.classList.add('parallax-frame');
-        observer.observe(frame);
-    });
+    groups.forEach((_, group) => observer.observe(group));
     window.addEventListener('scroll', requestUpdate, { passive: true });
 }

@@ -3591,22 +3591,23 @@ body {
     }
 }
 
-/* Telefon: albumy pojawiają się z fade + rozmyciem (timing jak w "Body of Water").
-   html + podwójna klasa podbija specyficzność ponad .lazy-optimized-image.loaded i .gallery-item img */
+/* Telefon: zdjęcia wjeżdżają z boku w rytm przewijania (JS: initMobileScrollFx) + parallax w kadrze */
 @media (max-width: 768px) {
-    html .reveal-pending {
-        transition: opacity 0.84s cubic-bezier(0.47, 0, 0.745, 0.715),
-                    filter 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+    /* Stan przed wjazdem - zanim JS policzy pozycję, zdjęcie czeka poza ekranem */
+    .slide-in.slide-from-left {
+        transform: translateX(-100%);
     }
 
-    html .reveal-pending:not(.is-revealed) {
-        opacity: 0;
-        filter: blur(50px);
+    .slide-in.slide-from-right {
+        transform: translateX(100%);
     }
-}
 
-/* Telefon: parallax w kadrze - ramka przycina, zdjęcie powiększone o zapas na ruch (JS: MOBILE_PARALLAX_SCALE) */
-@media (max-width: 768px) {
+    /* Asia: przesuwamy samo zdjęcie, więc komórka nie może go przycinać (przycina dopiero cała galeria) */
+    #after-sun .after-sun-item {
+        overflow: visible;
+    }
+
+    /* Parallax: ramka przycina, zdjęcie powiększone o zapas na ruch (JS: MOBILE_PARALLAX_SCALE) */
     .parallax-frame {
         overflow: hidden;
     }
